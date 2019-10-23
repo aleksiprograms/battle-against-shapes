@@ -1,0 +1,45 @@
+package com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions;
+
+import com.badlogic.gdx.audio.Sound;
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
+import com.badlogic.gdx.math.Vector2;
+
+public class Knife extends Ammunition {
+
+    private Sound sound;
+
+    public Knife(TheGame game) {
+
+        super(
+                game,
+                game.getTextureRegionByID(Constants.TEX_SRC_KNIFE),
+                game.physicalDefinitions.pdKnife,
+                Constants.KNIFE_WIDTH,
+                Constants.KNIFE_HEIGHT,
+                false);
+
+        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sound.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sound.resume();
+    }
+
+    @Override
+    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
+        super.init(x, y, angle, velocity, health, damage);
+        box2DBody.setAngularVelocity(0);
+        box2DBody.applyTorque(-80, true);
+        sound = game.sounds.getSoundByID(Constants.SOUND_SRC_KNIFE);
+        sound.play(game.saveManager.saveData.getSoundVolume());
+    }
+}

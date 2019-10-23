@@ -1,0 +1,446 @@
+
+texture_atlas_bas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ui_health_bar_background
+  rotate: false
+  xy: 1, 982
+  size: 512, 32
+  orig: 512, 32
+  offset: 0, 0
+  id: -1
+ui_health_bar_condition
+  rotate: false
+  xy: 1, 948
+  size: 512, 32
+  orig: 512, 32
+  offset: 0, 0
+  id: -1
+fighter
+  rotate: false
+  xy: 1, 818
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  id: -1
+game_mode_easy
+  rotate: false
+  xy: 1, 688
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  id: -1
+game_mode_hard
+  rotate: false
+  xy: 1, 558
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  id: -1
+game_mode_medium
+  rotate: false
+  xy: 1, 428
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  id: -1
+ui_background
+  rotate: false
+  xy: 1, 298
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  id: -1
+ammunition_knife
+  rotate: false
+  xy: 259, 690
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  id: -1
+ui_button_credits_d
+  rotate: false
+  xy: 1, 168
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_credits_u
+  rotate: false
+  xy: 293, 818
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_home_d
+  rotate: false
+  xy: 1, 38
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_home_u
+  rotate: false
+  xy: 131, 168
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_move_down_d
+  rotate: false
+  xy: 131, 38
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_move_down_u
+  rotate: false
+  xy: 293, 688
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_move_up_d
+  rotate: false
+  xy: 259, 558
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_move_up_u
+  rotate: false
+  xy: 259, 428
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_next_d
+  rotate: false
+  xy: 259, 298
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_next_u
+  rotate: false
+  xy: 261, 168
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_pause_d
+  rotate: false
+  xy: 261, 38
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_pause_u
+  rotate: false
+  xy: 423, 818
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_play_d
+  rotate: false
+  xy: 423, 688
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_play_u
+  rotate: false
+  xy: 389, 558
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_replay_d
+  rotate: false
+  xy: 389, 428
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_replay_u
+  rotate: false
+  xy: 389, 298
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_settings_d
+  rotate: false
+  xy: 391, 168
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_settings_u
+  rotate: false
+  xy: 391, 38
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_stats_d
+  rotate: false
+  xy: 553, 886
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_stats_u
+  rotate: false
+  xy: 553, 756
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_use_pri_wea_d
+  rotate: false
+  xy: 683, 886
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_use_pri_wea_u
+  rotate: false
+  xy: 683, 756
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_use_sec_wea_d
+  rotate: false
+  xy: 813, 886
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_button_use_sec_wea_u
+  rotate: false
+  xy: 813, 756
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_distance
+  rotate: false
+  xy: 553, 626
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_knob
+  rotate: false
+  xy: 683, 626
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_score
+  rotate: false
+  xy: 813, 626
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ammunition_dynamite
+  rotate: false
+  xy: 519, 558
+  size: 32, 128
+  orig: 32, 128
+  offset: 0, 0
+  id: -1
+ui_star_locked
+  rotate: false
+  xy: 553, 496
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+ui_star_unlocked
+  rotate: false
+  xy: 683, 496
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  id: -1
+enemy_ellipse
+  rotate: false
+  xy: 519, 492
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  id: -1
+enemy_circle
+  rotate: false
+  xy: 943, 950
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+enemy_pentagon
+  rotate: false
+  xy: 813, 560
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+enemy_square
+  rotate: false
+  xy: 943, 884
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+enemy_star
+  rotate: false
+  xy: 943, 818
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+enemy_triangle
+  rotate: false
+  xy: 943, 752
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+weapon_blade_launcher
+  rotate: false
+  xy: 943, 686
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+weapon_dynamite_launcher
+  rotate: false
+  xy: 813, 494
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+weapon_knife_thrower
+  rotate: false
+  xy: 879, 560
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  id: -1
+ammunition_bullet
+  rotate: false
+  xy: 1, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+ammunition_grenade
+  rotate: false
+  xy: 879, 526
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+ammunition_rocket
+  rotate: false
+  xy: 943, 652
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+enemy_rectangle
+  rotate: false
+  xy: 67, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+enemy_semicircle
+  rotate: false
+  xy: 515, 950
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  id: -1
+weapon_flamethrower
+  rotate: false
+  xy: 133, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+weapon_grenade_launcher
+  rotate: false
+  xy: 199, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+weapon_machine_gun
+  rotate: false
+  xy: 265, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+weapon_rocket_launcher
+  rotate: false
+  xy: 331, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+weapon_shotgun
+  rotate: false
+  xy: 397, 4
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  id: -1
+ammunition_blade
+  rotate: false
+  xy: 519, 458
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  id: -1
+ammunition_shot
+  rotate: false
+  xy: 553, 462
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  id: -1
+ui_health_bar_end
+  rotate: false
+  xy: 1009, 982
+  size: 8, 32
+  orig: 8, 32
+  offset: 0, 0
+  id: -1
+ui_rectangle_black
+  rotate: false
+  xy: 1, 1
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  id: -1
+ui_rectangle_blue
+  rotate: false
+  xy: 879, 523
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  id: -1
+ui_rectangle_grey
+  rotate: false
+  xy: 943, 649
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  id: -1
