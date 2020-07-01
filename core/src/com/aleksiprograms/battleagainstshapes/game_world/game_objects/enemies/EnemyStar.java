@@ -1,10 +1,10 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
 
 public class EnemyStar extends Enemy {
 
@@ -14,20 +14,24 @@ public class EnemyStar extends Enemy {
     private float timeFromLastShot;
 
     public EnemyStar(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_ENEMY_STAR),
-                game.physicalDefinitions.pdEnemyStar,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_ENEMY_STAR),
+                game.getResources().getPhysicalDefinitions().getEnemyStarPhyDef(),
                 Constants.ENEMY_STAR_WIDTH,
                 Constants.ENEMY_STAR_HEIGHT);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         this.x = x;
         this.y = y;
         shotDelay = 1;
@@ -47,18 +51,23 @@ public class EnemyStar extends Enemy {
             if (timeFromLastShot >= shotDelay) {
                 shotDelay = 1;
                 timeFromLastShot = 0;
-                game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_AMMUNITION).play(game.saveManager.saveData.getSoundVolume());
+                game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_AMMUNITION)
+                        .play(game.getSaveManager().getSaveData().getSoundVolume());
                 float angle = box2DBody.getAngle();
                 for (int i = 0; i < 5; i++) {
-                    float angleAmmunition = ((i / (float) 5) * 360 * MathUtils.degreesToRadians) - MathUtils.PI + angle;
-                    game.gameWorld.addEnemyStarAmmunitionToWorld(
-                            game.gameObjectPools.enemyStarAmmunitionPool.obtain(),
+                    float angleAmmunition = ((i / (float) 5)
+                            * 360 * MathUtils.degreesToRadians) - MathUtils.PI + angle;
+                    game.getGameWorld().addGameObjectToWorld(
+                            game.getResources().getGameObjectPools()
+                                    .getEnemyStarAmmunitionPool().obtain(),
                             box2DBody.getPosition().x,
                             box2DBody.getPosition().y,
-                            - MathUtils.PI / 2,
+                            -MathUtils.PI / 2,
                             new Vector2(
-                                    MathUtils.cos(angleAmmunition) * Constants.VELOCITY_ENEMY_STAR_AMMUNITION.len(),
-                                    MathUtils.sin(angleAmmunition) * Constants.VELOCITY_ENEMY_STAR_AMMUNITION.len()),
+                                    MathUtils.cos(angleAmmunition)
+                                            * Constants.VELOCITY_ENEMY_STAR_AMMUNITION.len(),
+                                    MathUtils.sin(angleAmmunition)
+                                            * Constants.VELOCITY_ENEMY_STAR_AMMUNITION.len()),
                             Constants.MAX_HEALTH_ENEMY_STAR_AMMUNITION,
                             Constants.DAMAGE_ENEMY_STAR_AMMUNITION);
                 }
@@ -67,19 +76,26 @@ public class EnemyStar extends Enemy {
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
-        super.onContact(damage, gameObjectA, gameObjectB);
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
+        super.onContact(damage, physicalGameObjectA, physicalGameObjectB);
         if (health <= 0 && !dead) {
             dead = true;
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_EXPLOSION).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyStarExplosionPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_EXPLOSION)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyStarExplosionPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         } else {
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_HIT).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyStarHitPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_HIT)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyStarHitPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         }

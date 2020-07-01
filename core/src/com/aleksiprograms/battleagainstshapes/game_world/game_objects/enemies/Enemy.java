@@ -1,28 +1,21 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.DrawableGameObject;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Blade;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Bullet;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Dynamite;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Grenade;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Knife;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Rocket;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Shot;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.general_objects.Fighter;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.DynamiteExplosionParticle;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.DrawablePhysicalGameObject;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.Fighter;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Ammunition;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.ExplosionParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.FighterFlameParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.FlamethrowerParticle;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.GrenadeExplosionParticle;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.RocketExplosionParticle;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
-public abstract class Enemy extends DrawableGameObject {
+public abstract class Enemy extends DrawablePhysicalGameObject {
 
-    public boolean dead;
+    protected boolean dead;
 
     public Enemy(
             TheGame game,
@@ -30,7 +23,6 @@ public abstract class Enemy extends DrawableGameObject {
             PhysicalDef physicalDef,
             float width,
             float height) {
-
         super(
                 game,
                 textureRegion,
@@ -41,57 +33,60 @@ public abstract class Enemy extends DrawableGameObject {
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         box2DBody.setTransform(x, y, 0);
         dead = false;
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
-        super.onContact(damage, gameObjectA, gameObjectB);
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
+        super.onContact(damage, physicalGameObjectA, physicalGameObjectB);
         if (health <= 0 && !dead) {
-            game.player.gameModeStatsManager.addToScore();
-            game.gameStateManager.setUpdateInGameHud(true);
+            game.getGameScreen().getInGameStatsManager().addToScore();
+            game.getGameScreen().getInGameHud().updateData();
 
-            if (gameObjectA instanceof Fighter || gameObjectB instanceof Fighter) {
-                game.player.gameModeStatsManager.addToFighterKills();
+            if (physicalGameObjectA instanceof Fighter ||
+                    physicalGameObjectB instanceof Fighter) {
+                game.getGameScreen().getInGameStatsManager().addToFighterKills();
             }
-            if (gameObjectA instanceof FighterFlameParticle || gameObjectB instanceof FighterFlameParticle) {
-                game.player.gameModeStatsManager.addToFighterKills();
+            if (physicalGameObjectA instanceof Ammunition ||
+                    physicalGameObjectB instanceof Ammunition) {
+                if (physicalGameObjectA instanceof Ammunition) {
+                    game.getGameScreen().getInGameStatsManager().addToWeaponKills(
+                            ((Ammunition) physicalGameObjectA).getWeaponID());
+                } else {
+                    game.getGameScreen().getInGameStatsManager().addToWeaponKills(
+                            ((Ammunition) physicalGameObjectB).getWeaponID());
+                }
             }
-            if (gameObjectA instanceof Bullet || gameObjectB instanceof Bullet) {
-                game.player.gameModeStatsManager.addToPriWeaKills();
+            if (physicalGameObjectA instanceof FighterFlameParticle ||
+                    physicalGameObjectB instanceof FighterFlameParticle) {
+                game.getGameScreen().getInGameStatsManager().addToFighterKills();
             }
-            if (gameObjectA instanceof Shot || gameObjectB instanceof Shot) {
-                game.player.gameModeStatsManager.addToPriWeaKills();
+            if (physicalGameObjectA instanceof FlamethrowerParticle ||
+                    physicalGameObjectB instanceof FlamethrowerParticle) {
+                game.getGameScreen().getInGameStatsManager().addToWeaponKills(
+                        Constants.FLAMETHROWER_ID);
             }
-            if (gameObjectA instanceof FlamethrowerParticle || gameObjectB instanceof FlamethrowerParticle) {
-                game.player.gameModeStatsManager.addToPriWeaKills();
-            }
-            if (gameObjectA instanceof Knife || gameObjectB instanceof Knife) {
-                game.player.gameModeStatsManager.addToPriWeaKills();
-            }
-            if (gameObjectA instanceof Grenade || gameObjectB instanceof Grenade) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
-            }
-            if (gameObjectA instanceof GrenadeExplosionParticle || gameObjectB instanceof GrenadeExplosionParticle) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
-            }
-            if (gameObjectA instanceof Rocket || gameObjectB instanceof Rocket) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
-            }
-            if (gameObjectA instanceof RocketExplosionParticle || gameObjectB instanceof RocketExplosionParticle) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
-            }
-            if (gameObjectA instanceof Dynamite || gameObjectB instanceof Dynamite) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
-            }
-            if (gameObjectA instanceof DynamiteExplosionParticle || gameObjectB instanceof DynamiteExplosionParticle) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
-            }
-            if (gameObjectA instanceof Blade || gameObjectB instanceof Blade) {
-                game.player.gameModeStatsManager.addToSecWeaKills();
+            if (physicalGameObjectA instanceof ExplosionParticle ||
+                    physicalGameObjectB instanceof ExplosionParticle) {
+                if (physicalGameObjectA instanceof ExplosionParticle) {
+                    game.getGameScreen().getInGameStatsManager().addToWeaponKills(
+                            ((ExplosionParticle) physicalGameObjectA).getWeaponID());
+                } else {
+                    game.getGameScreen().getInGameStatsManager().addToWeaponKills(
+                            ((ExplosionParticle) physicalGameObjectB).getWeaponID());
+                }
             }
         }
     }

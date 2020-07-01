@@ -1,27 +1,31 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
 import com.aleksiprograms.battleagainstshapes.resources.Constants;
+import com.badlogic.gdx.math.Vector2;
 
 public class EnemyEllipse extends Enemy {
 
     public EnemyEllipse(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_ENEMY_ELLIPSE),
-                game.physicalDefinitions.pdEnemyEllipse,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_ENEMY_ELLIPSE),
+                game.getResources().getPhysicalDefinitions().getEnemyEllipsePhyDef(),
                 Constants.ENEMY_ELLIPSE_WIDTH,
                 Constants.ENEMY_ELLIPSE_HEIGHT);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         box2DBody.setAngularVelocity(0);
     }
 
@@ -33,19 +37,26 @@ public class EnemyEllipse extends Enemy {
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
-        super.onContact(damage, gameObjectA, gameObjectB);
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
+        super.onContact(damage, physicalGameObjectA, physicalGameObjectB);
         if (health <= 0 && !dead) {
             dead = true;
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_EXPLOSION).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyEllipseExplosionPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_EXPLOSION)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyEllipseExplosionPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         } else {
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_HIT).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyEllipseHitPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_HIT)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyEllipseHitPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         }

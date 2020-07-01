@@ -1,7 +1,7 @@
 package com.aleksiprograms.battleagainstshapes.resources;
 
-import com.badlogic.gdx.audio.Sound;
 import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.badlogic.gdx.audio.Sound;
 
 /**
  * Holds sound effects of the game.
@@ -32,45 +32,65 @@ public class Sounds {
     private int dynamiteSoundIndex;
     private int explosionSmallSoundIndex;
     private int explosionBigSoundIndex;
-    
+
     public Sounds(TheGame game) {
-        buttonPosSound = game.assetManager.get(Constants.SOUND_SRC_BUTTON_POS);
-        buttonNegSound = game.assetManager.get(Constants.SOUND_SRC_BUTTON_NEG);
-        enemyHitSound = game.assetManager.get(Constants.SOUND_SRC_ENEMY_HIT);
-        enemyExplosionSound = game.assetManager.get(Constants.SOUND_SRC_ENEMY_EXPLOSION);
-        enemyAmmunitionSound = game.assetManager.get(Constants.SOUND_SRC_ENEMY_AMMUNITION);
-        explosionSmallASound = game.assetManager.get(Constants.SOUND_SRC_EXPLOSION_SMALL_A);
-        explosionSmallBSound = game.assetManager.get(Constants.SOUND_SRC_EXPLOSION_SMALL_B);
-        explosionSmallCSound = game.assetManager.get(Constants.SOUND_SRC_EXPLOSION_SMALL_C);
-        explosionBigASound = game.assetManager.get(Constants.SOUND_SRC_EXPLOSION_BIG_A);
-        explosionBigBSound = game.assetManager.get(Constants.SOUND_SRC_EXPLOSION_BIG_B);
-        explosionBigCSound = game.assetManager.get(Constants.SOUND_SRC_EXPLOSION_BIG_C);
-        bulletSound = game.assetManager.get(Constants.SOUND_SRC_BULLET);
-        shotSound = game.assetManager.get(Constants.SOUND_SRC_SHOT);
-        knifeSound = game.assetManager.get(Constants.SOUND_SRC_KNIFE);
-        grenadeSound = game.assetManager.get(Constants.SOUND_SRC_GRENADE);
-        rocketSound = game.assetManager.get(Constants.SOUND_SRC_ROCKET);
-        dynamiteASound = game.assetManager.get(Constants.SOUND_SRC_DYNAMITE_A);
-        dynamiteBSound = game.assetManager.get(Constants.SOUND_SRC_DYNAMITE_B);
-        dynamiteCSound = game.assetManager.get(Constants.SOUND_SRC_DYNAMITE_C);
-        bladeSound = game.assetManager.get(Constants.SOUND_SRC_BLADE);
+        buttonPosSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_BUTTON_POS);
+        buttonNegSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_BUTTON_NEG);
+        enemyHitSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_ENEMY_HIT);
+        enemyExplosionSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_ENEMY_EXPLOSION);
+        enemyAmmunitionSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_ENEMY_AMMUNITION);
+        explosionSmallASound = game.getResources().getAssetManager().get(
+                Constants.SOUND_EXPLOSION_SMALL_A);
+        explosionSmallBSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_EXPLOSION_SMALL_B);
+        explosionSmallCSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_EXPLOSION_SMALL_C);
+        explosionBigASound = game.getResources().getAssetManager().get(
+                Constants.SOUND_EXPLOSION_BIG_A);
+        explosionBigBSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_EXPLOSION_BIG_B);
+        explosionBigCSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_EXPLOSION_BIG_C);
+        bulletSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_BULLET);
+        shotSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_SHOT);
+        knifeSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_KNIFE);
+        grenadeSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_GRENADE);
+        rocketSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_ROCKET);
+        dynamiteASound = game.getResources().getAssetManager().get(
+                Constants.SOUND_DYNAMITE_A);
+        dynamiteBSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_DYNAMITE_B);
+        dynamiteCSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_DYNAMITE_C);
+        bladeSound = game.getResources().getAssetManager().get(
+                Constants.SOUND_BLADE);
         dynamiteSoundIndex = 0;
         explosionSmallSoundIndex = 0;
         explosionBigSoundIndex = 0;
     }
-    
+
     public Sound getSoundByID(String soundID) {
-        if (soundID.equals(Constants.SOUND_SRC_BUTTON_POS))
+        if (soundID.equals(Constants.SOUND_BUTTON_POS)) {
             return buttonPosSound;
-        if (soundID.equals(Constants.SOUND_SRC_BUTTON_NEG))
+        } else if (soundID.equals(Constants.SOUND_BUTTON_NEG)) {
             return buttonNegSound;
-        if (soundID.equals(Constants.SOUND_SRC_ENEMY_HIT))
+        } else if (soundID.equals(Constants.SOUND_ENEMY_HIT)) {
             return enemyHitSound;
-        if (soundID.equals(Constants.SOUND_SRC_ENEMY_EXPLOSION))
+        } else if (soundID.equals(Constants.SOUND_ENEMY_EXPLOSION)) {
             return enemyExplosionSound;
-        if (soundID.equals(Constants.SOUND_SRC_ENEMY_AMMUNITION))
+        } else if (soundID.equals(Constants.SOUND_ENEMY_AMMUNITION)) {
             return enemyAmmunitionSound;
-        if (soundID.equals(Constants.SOUND_SRC_EXPLOSION_SMALL_A)) {
+        } else if (soundID.equals(Constants.SOUND_EXPLOSION_SMALL_A)) {
             switch (explosionSmallSoundIndex) {
                 case 0:
                     explosionSmallSoundIndex += 1;
@@ -84,8 +104,7 @@ public class Sounds {
                 default:
                     return explosionSmallASound;
             }
-        }
-        if (soundID.equals(Constants.SOUND_SRC_EXPLOSION_BIG_A)) {
+        } else if (soundID.equals(Constants.SOUND_EXPLOSION_BIG_A)) {
             switch (explosionBigSoundIndex) {
                 case 0:
                     explosionBigSoundIndex += 1;
@@ -99,18 +118,17 @@ public class Sounds {
                 default:
                     return explosionBigASound;
             }
-        }
-        if (soundID.equals(Constants.SOUND_SRC_BULLET))
+        } else if (soundID.equals(Constants.SOUND_BULLET)) {
             return bulletSound;
-        if (soundID.equals(Constants.SOUND_SRC_SHOT))
+        } else if (soundID.equals(Constants.SOUND_SHOT)) {
             return shotSound;
-        if (soundID.equals(Constants.SOUND_SRC_KNIFE))
+        } else if (soundID.equals(Constants.SOUND_KNIFE)) {
             return knifeSound;
-        if (soundID.equals(Constants.SOUND_SRC_GRENADE))
+        } else if (soundID.equals(Constants.SOUND_GRENADE)) {
             return grenadeSound;
-        if (soundID.equals(Constants.SOUND_SRC_ROCKET))
+        } else if (soundID.equals(Constants.SOUND_ROCKET)) {
             return rocketSound;
-        if (soundID.equals(Constants.SOUND_SRC_DYNAMITE_A)) {
+        } else if (soundID.equals(Constants.SOUND_DYNAMITE_A)) {
             switch (dynamiteSoundIndex) {
                 case 0:
                     dynamiteSoundIndex += 1;
@@ -124,9 +142,10 @@ public class Sounds {
                 default:
                     return dynamiteASound;
             }
-        }
-        if (soundID.equals(Constants.SOUND_SRC_BLADE))
+        } else if (soundID.equals(Constants.SOUND_BLADE)) {
             return bladeSound;
-        return buttonPosSound;
+        } else {
+            return buttonPosSound;
+        }
     }
 }

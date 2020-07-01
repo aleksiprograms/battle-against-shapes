@@ -1,18 +1,17 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
 
 public class DynamiteLauncher extends AmmoHolder {
 
     public DynamiteLauncher(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_DYNAMITE_LAUNCHER),
-                game.getTextureRegionByID(Constants.TEX_SRC_DYNAMITE),
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_DYNAMITE_LAUNCHER),
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_DYNAMITE),
                 Constants.DYNAMITE_LAUNCHER_ID,
                 4,
                 Constants.DYNAMITE_LAUNCHER_WIDTH,
@@ -37,16 +36,19 @@ public class DynamiteLauncher extends AmmoHolder {
 
             Vector2 velocity;
             for (int i = 0; i < angles.length; i++) {
-                velocity = new Vector2(MathUtils.cos(angles[i]), MathUtils.sin(angles[i])).scl(Constants.VELOCITY_DYNAMITE.len());
-                game.gameWorld.addDynamiteToWorld(
-                        game.gameObjectPools.dynamitePool.obtain(),
-                        game.player.fighter.box2DBody.getPosition().x + Constants.DYNAMITE_X_OFFSET,
-                        game.player.fighter.box2DBody.getPosition().y + Constants.DYNAMITE_Y_OFFSET,
+                velocity = new Vector2(MathUtils.cos(angles[i]), MathUtils.sin(angles[i]))
+                        .scl(Constants.VELOCITY_DYNAMITE.len());
+                game.getGameWorld().addGameObjectToWorld(
+                        game.getResources().getGameObjectPools().getDynamitePool().obtain(),
+                        game.getGameWorld().getPlayer().getFighter().getBox2DBody()
+                                .getPosition().x + Constants.DYNAMITE_X_OFFSET,
+                        game.getGameWorld().getPlayer().getFighter().getBox2DBody()
+                                .getPosition().y + Constants.DYNAMITE_Y_OFFSET,
                         0,
                         velocity,
                         Constants.MAX_HEALTH_DYNAMITE,
                         Constants.DAMAGE_DYNAMITE);
-                game.player.gameModeStatsManager.addToSecWeaAmmunitionsFired();
+                game.getGameScreen().getInGameStatsManager().addToWeaponAmmunitionsFired(weaponID);
             }
         }
     }

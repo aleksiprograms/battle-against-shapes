@@ -1,10 +1,10 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
 
 public class EnemyPentagon extends Enemy {
 
@@ -13,15 +13,13 @@ public class EnemyPentagon extends Enemy {
     private int explosionDistance;
 
     public EnemyPentagon(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_ENEMY_PENTAGON),
-                game.physicalDefinitions.pdEnemyPentagon,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_ENEMY_PENTAGON),
+                game.getResources().getPhysicalDefinitions().getEnemyPentagonPhyDef(),
                 Constants.ENEMY_PENTAGON_WIDTH,
                 Constants.ENEMY_PENTAGON_HEIGHT);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
         explosionParticles = 15;
         explosionPower = 20;
         explosionDistance = 150;
@@ -30,14 +28,19 @@ public class EnemyPentagon extends Enemy {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-
         if (!super.objectFreed) {
             float xPosition = box2DBody.getPosition().x - sprite.getWidth() / 2;
             float yPosition = box2DBody.getPosition().y - sprite.getWidth() / 2;
-            float targetXPosition = game.player.fighter.box2DBody.getPosition().x;
-            float targetYPosition = game.player.fighter.box2DBody.getPosition().y;
-            double distance = Math.sqrt((targetXPosition - xPosition) * (targetXPosition - xPosition) + (targetYPosition - yPosition) * (targetYPosition - yPosition));
-            float angle = MathUtils.atan2(targetYPosition - yPosition, targetXPosition - xPosition);
+            float targetXPosition = game.getGameWorld()
+                    .getPlayer().getFighter().getBox2DBody().getPosition().x;
+            float targetYPosition = game.getGameWorld()
+                    .getPlayer().getFighter().getBox2DBody().getPosition().y;
+            double distance = Math.sqrt((
+                    targetXPosition - xPosition) * (targetXPosition - xPosition)
+                    + (targetYPosition - yPosition) * (targetYPosition - yPosition));
+            float angle = MathUtils.atan2(
+                    targetYPosition - yPosition,
+                    targetXPosition - xPosition);
 
             box2DBody.setLinearVelocity(
                     MathUtils.cos(angle) * Constants.VELOCITY_ENEMY_PENTAGON.len(),
@@ -46,14 +49,20 @@ public class EnemyPentagon extends Enemy {
 
             if (distance < (explosionDistance / Constants.PPM)) {
                 freeObject = true;
-                game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_EXPLOSION).play(game.saveManager.saveData.getSoundVolume());
+                game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_EXPLOSION)
+                        .play(game.getSaveManager().getSaveData().getSoundVolume());
                 float angleAmmunition;
                 Vector2 velocity;
                 for (int i = 0; i < explosionParticles; i++) {
-                    angleAmmunition = (i / (float) explosionParticles) * 360 * MathUtils.degreesToRadians;
-                    velocity = new Vector2(MathUtils.sin(angleAmmunition), MathUtils.cos(angleAmmunition)).scl(Constants.VELOCITY_ENEMY_PENTAGON_AMMUNITION.len());
-                    game.gameWorld.addEnemyPentagonAmmunitionToWorld(
-                            game.gameObjectPools.enemyPentagonAmmunitionPool.obtain(),
+                    angleAmmunition = (i / (float) explosionParticles)
+                            * 360 * MathUtils.degreesToRadians;
+                    velocity = new Vector2(
+                            MathUtils.sin(angleAmmunition),
+                            MathUtils.cos(angleAmmunition))
+                            .scl(Constants.VELOCITY_ENEMY_PENTAGON_AMMUNITION.len());
+                    game.getGameWorld().addGameObjectToWorld(
+                            game.getResources().getGameObjectPools()
+                                    .getEnemyPentagonAmmunitionPool().obtain(),
                             box2DBody.getPosition().x,
                             box2DBody.getPosition().y,
                             angleAmmunition,
@@ -66,19 +75,26 @@ public class EnemyPentagon extends Enemy {
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
-        super.onContact(damage, gameObjectA, gameObjectB);
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
+        super.onContact(damage, physicalGameObjectA, physicalGameObjectB);
         if (health <= 0 && !dead) {
             dead = true;
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_EXPLOSION).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyPentagonExplosionPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_EXPLOSION)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyPentagonExplosionPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         } else {
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_HIT).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyPentagonHitPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_HIT)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyPentagonHitPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         }

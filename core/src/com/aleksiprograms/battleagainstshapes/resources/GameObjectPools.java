@@ -1,7 +1,8 @@
 package com.aleksiprograms.battleagainstshapes.resources;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.badlogic.gdx.utils.Pool;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.Fighter;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.InvisibleWall;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Blade;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Bullet;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Dynamite;
@@ -11,9 +12,9 @@ import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunition
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions.Shot;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyCircle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyCircleAmmunition;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyPentagonAmmunition;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyEllipse;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyPentagon;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyPentagonAmmunition;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyRectangle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyRectangleAmmunition;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemySemicircle;
@@ -23,80 +24,74 @@ import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.En
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyStarAmmunition;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyTriangle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies.EnemyTriangleAmmunition;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.general_objects.Fighter;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.general_objects.Wall;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.DynamiteExplosionParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.FighterExplosionParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.FighterFlameParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.FlamethrowerParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.GrenadeExplosionParticle;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.particles.RocketExplosionParticle;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.DynamiteLauncher;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.BladeLauncher;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.DynamiteLauncher;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.Flamethrower;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.GrenadeLauncher;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.KnifeThrower;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.MachineGun;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.RocketLauncher;
 import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.Shotgun;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons.KnifeThrower;
+import com.badlogic.gdx.utils.Pool;
 
 /**
  * Creates and holds all the game object pools, hence the game objects are reusable.
- * You can obtain a game object from the pool (you may want to initialize it).
+ * When you obtain a game object from the pool, you need to initialize the object.
  * After using the object, it must be freed back to its pool.
  */
 public class GameObjectPools {
 
-    public Pool<Fighter> fighterPool;
-    public Pool<Wall> wallPool;
-
-    public Pool<Bullet> bulletPool;
-    public Pool<Shot> shotPool;
-    public Pool<Knife> knifePool;
-    public Pool<Grenade> grenadePool;
-    public Pool<Rocket> rocketPool;
-    public Pool<Dynamite> dynamitePool;
-    public Pool<Blade> bladePool;
-
-    public Pool<MachineGun> machineGunPool;
-    public Pool<Shotgun> shotgunPool;
-    public Pool<Flamethrower> flamethrowerPool;
-    public Pool<KnifeThrower> swordHolderPool;
-    public Pool<GrenadeLauncher> grenadeLauncherPool;
-    public Pool<RocketLauncher> rocketLauncherPool;
-    public Pool<BladeLauncher> bladeLauncherPool;
-    public Pool<DynamiteLauncher> airCannonPool;
-
-    public Pool<FighterFlameParticle> fighterFlameParticlePool;
-    public Pool<FlamethrowerParticle> flamethrowerParticlePool;
-    public Pool<FighterExplosionParticle> fighterExplosionParticlePool;
-    public Pool<GrenadeExplosionParticle> grenadeExplosionParticlePool;
-    public Pool<RocketExplosionParticle> rocketExplosionParticlePool;
-    public Pool<DynamiteExplosionParticle> dynamiteExplosionParticlePool;
-
-    public Pool<EnemyCircle> enemyCirclePool;
-    public Pool<EnemyEllipse> enemyEllipsePool;
-    public Pool<EnemyPentagon> enemyPentagonPool;
-    public Pool<EnemyRectangle> enemyRectanglePool;
-    public Pool<EnemySemicircle> enemySemicirclePool;
-    public Pool<EnemySquare> enemySquarePool;
-    public Pool<EnemyStar> enemyStarPool;
-    public Pool<EnemyTriangle> enemyTrianglePool;
-    public Pool<EnemyCircleAmmunition> enemyCircleAmmunitionPool;
-    public Pool<EnemyPentagonAmmunition> enemyPentagonAmmunitionPool;
-    public Pool<EnemyRectangleAmmunition> enemyRectangleAmmunitionPool;
-    public Pool<EnemySemicircleAmmunition> enemySemicircleAmmunitionPool;
-    public Pool<EnemyStarAmmunition> enemyStarAmmunitionPool;
-    public Pool<EnemyTriangleAmmunition> enemyTriangleAmmunitionPool;
+    private Pool<Fighter> fighterPool;
+    private Pool<InvisibleWall> invisibleWallPool;
+    private Pool<Bullet> bulletPool;
+    private Pool<Shot> shotPool;
+    private Pool<Knife> knifePool;
+    private Pool<Grenade> grenadePool;
+    private Pool<Rocket> rocketPool;
+    private Pool<Dynamite> dynamitePool;
+    private Pool<Blade> bladePool;
+    private Pool<MachineGun> machineGunPool;
+    private Pool<Shotgun> shotgunPool;
+    private Pool<Flamethrower> flamethrowerPool;
+    private Pool<KnifeThrower> knifeThrowerPool;
+    private Pool<GrenadeLauncher> grenadeLauncherPool;
+    private Pool<RocketLauncher> rocketLauncherPool;
+    private Pool<BladeLauncher> bladeLauncherPool;
+    private Pool<DynamiteLauncher> dynamiteLauncherPool;
+    private Pool<FighterFlameParticle> fighterFlameParticlePool;
+    private Pool<FlamethrowerParticle> flamethrowerParticlePool;
+    private Pool<FighterExplosionParticle> fighterExplosionParticlePool;
+    private Pool<GrenadeExplosionParticle> grenadeExplosionParticlePool;
+    private Pool<RocketExplosionParticle> rocketExplosionParticlePool;
+    private Pool<DynamiteExplosionParticle> dynamiteExplosionParticlePool;
+    private Pool<EnemyCircle> enemyCirclePool;
+    private Pool<EnemyEllipse> enemyEllipsePool;
+    private Pool<EnemyPentagon> enemyPentagonPool;
+    private Pool<EnemyRectangle> enemyRectanglePool;
+    private Pool<EnemySemicircle> enemySemicirclePool;
+    private Pool<EnemySquare> enemySquarePool;
+    private Pool<EnemyStar> enemyStarPool;
+    private Pool<EnemyTriangle> enemyTrianglePool;
+    private Pool<EnemyCircleAmmunition> enemyCircleAmmunitionPool;
+    private Pool<EnemyPentagonAmmunition> enemyPentagonAmmunitionPool;
+    private Pool<EnemyRectangleAmmunition> enemyRectangleAmmunitionPool;
+    private Pool<EnemySemicircleAmmunition> enemySemicircleAmmunitionPool;
+    private Pool<EnemyStarAmmunition> enemyStarAmmunitionPool;
+    private Pool<EnemyTriangleAmmunition> enemyTriangleAmmunitionPool;
 
     public GameObjectPools(final TheGame game) {
-        initializePools(game);
+        initialize(game);
     }
 
     public void dispose() {
         fighterPool.clear();
-        wallPool.clear();
-
+        invisibleWallPool.clear();
         bulletPool.clear();
         shotPool.clear();
         knifePool.clear();
@@ -104,23 +99,20 @@ public class GameObjectPools {
         rocketPool.clear();
         dynamitePool.clear();
         bladePool.clear();
-
         machineGunPool.clear();
         shotgunPool.clear();
         flamethrowerPool.clear();
-        swordHolderPool.clear();
+        knifeThrowerPool.clear();
         grenadeLauncherPool.clear();
         rocketLauncherPool.clear();
         bladeLauncherPool.clear();
-        airCannonPool.clear();
-
+        dynamiteLauncherPool.clear();
         fighterFlameParticlePool.clear();
         flamethrowerParticlePool.clear();
         fighterExplosionParticlePool.clear();
         grenadeExplosionParticlePool.clear();
         rocketExplosionParticlePool.clear();
         dynamiteExplosionParticlePool.clear();
-
         enemyCirclePool.clear();
         enemyEllipsePool.clear();
         enemyPentagonPool.clear();
@@ -138,17 +130,17 @@ public class GameObjectPools {
 
     }
 
-    private void initializePools(final TheGame game) {
+    private void initialize(final TheGame game) {
         fighterPool = new Pool<Fighter>(0, 1) {
             @Override
             protected Fighter newObject() {
                 return new Fighter(game);
             }
         };
-        wallPool = new Pool<Wall>(100, 200) {
+        invisibleWallPool = new Pool<InvisibleWall>(100, 200) {
             @Override
-            protected Wall newObject() {
-                return new Wall(game);
+            protected InvisibleWall newObject() {
+                return new InvisibleWall(game);
             }
         };
 
@@ -215,7 +207,7 @@ public class GameObjectPools {
                 return new Flamethrower(game);
             }
         };
-        swordHolderPool = new Pool<KnifeThrower>(0, 1) {
+        knifeThrowerPool = new Pool<KnifeThrower>(0, 1) {
             @Override
             protected KnifeThrower newObject() {
                 return new KnifeThrower(game);
@@ -239,7 +231,7 @@ public class GameObjectPools {
                 return new BladeLauncher(game);
             }
         };
-        airCannonPool = new Pool<DynamiteLauncher>(0, 1) {
+        dynamiteLauncherPool = new Pool<DynamiteLauncher>(0, 1) {
             @Override
             protected DynamiteLauncher newObject() {
                 return new DynamiteLauncher(game);
@@ -369,5 +361,153 @@ public class GameObjectPools {
                 return new EnemyTriangleAmmunition(game);
             }
         };
+    }
+
+    public Pool<Fighter> getFighterPool() {
+        return fighterPool;
+    }
+
+    public Pool<InvisibleWall> getInvisibleWallPool() {
+        return invisibleWallPool;
+    }
+
+    public Pool<Bullet> getBulletPool() {
+        return bulletPool;
+    }
+
+    public Pool<Shot> getShotPool() {
+        return shotPool;
+    }
+
+    public Pool<Knife> getKnifePool() {
+        return knifePool;
+    }
+
+    public Pool<Grenade> getGrenadePool() {
+        return grenadePool;
+    }
+
+    public Pool<Rocket> getRocketPool() {
+        return rocketPool;
+    }
+
+    public Pool<Dynamite> getDynamitePool() {
+        return dynamitePool;
+    }
+
+    public Pool<Blade> getBladePool() {
+        return bladePool;
+    }
+
+    public Pool<MachineGun> getMachineGunPool() {
+        return machineGunPool;
+    }
+
+    public Pool<Shotgun> getShotgunPool() {
+        return shotgunPool;
+    }
+
+    public Pool<Flamethrower> getFlamethrowerPool() {
+        return flamethrowerPool;
+    }
+
+    public Pool<KnifeThrower> getKnifeThrowerPool() {
+        return knifeThrowerPool;
+    }
+
+    public Pool<GrenadeLauncher> getGrenadeLauncherPool() {
+        return grenadeLauncherPool;
+    }
+
+    public Pool<RocketLauncher> getRocketLauncherPool() {
+        return rocketLauncherPool;
+    }
+
+    public Pool<BladeLauncher> getBladeLauncherPool() {
+        return bladeLauncherPool;
+    }
+
+    public Pool<DynamiteLauncher> getDynamiteLauncherPool() {
+        return dynamiteLauncherPool;
+    }
+
+    public Pool<FighterFlameParticle> getFighterFlameParticlePool() {
+        return fighterFlameParticlePool;
+    }
+
+    public Pool<FlamethrowerParticle> getFlamethrowerParticlePool() {
+        return flamethrowerParticlePool;
+    }
+
+    public Pool<FighterExplosionParticle> getFighterExplosionParticlePool() {
+        return fighterExplosionParticlePool;
+    }
+
+    public Pool<GrenadeExplosionParticle> getGrenadeExplosionParticlePool() {
+        return grenadeExplosionParticlePool;
+    }
+
+    public Pool<RocketExplosionParticle> getRocketExplosionParticlePool() {
+        return rocketExplosionParticlePool;
+    }
+
+    public Pool<DynamiteExplosionParticle> getDynamiteExplosionParticlePool() {
+        return dynamiteExplosionParticlePool;
+    }
+
+    public Pool<EnemyCircle> getEnemyCirclePool() {
+        return enemyCirclePool;
+    }
+
+    public Pool<EnemyEllipse> getEnemyEllipsePool() {
+        return enemyEllipsePool;
+    }
+
+    public Pool<EnemyPentagon> getEnemyPentagonPool() {
+        return enemyPentagonPool;
+    }
+
+    public Pool<EnemyRectangle> getEnemyRectanglePool() {
+        return enemyRectanglePool;
+    }
+
+    public Pool<EnemySemicircle> getEnemySemicirclePool() {
+        return enemySemicirclePool;
+    }
+
+    public Pool<EnemySquare> getEnemySquarePool() {
+        return enemySquarePool;
+    }
+
+    public Pool<EnemyStar> getEnemyStarPool() {
+        return enemyStarPool;
+    }
+
+    public Pool<EnemyTriangle> getEnemyTrianglePool() {
+        return enemyTrianglePool;
+    }
+
+    public Pool<EnemyCircleAmmunition> getEnemyCircleAmmunitionPool() {
+        return enemyCircleAmmunitionPool;
+    }
+
+    public Pool<EnemyPentagonAmmunition> getEnemyPentagonAmmunitionPool() {
+        return enemyPentagonAmmunitionPool;
+    }
+
+    public Pool<EnemyRectangleAmmunition> getEnemyRectangleAmmunitionPool() {
+        return enemyRectangleAmmunitionPool;
+    }
+
+    public Pool<EnemySemicircleAmmunition> getEnemySemicircleAmmunitionPool() {
+        return enemySemicircleAmmunitionPool;
+    }
+
+    public Pool<EnemyStarAmmunition> getEnemyStarAmmunitionPool() {
+        return enemyStarAmmunitionPool;
+    }
+
+    public Pool<EnemyTriangleAmmunition> getEnemyTriangleAmmunitionPool() {
+        return enemyTriangleAmmunitionPool;
     }
 }

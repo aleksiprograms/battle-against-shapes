@@ -1,5 +1,7 @@
 package com.aleksiprograms.battleagainstshapes.screens;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -8,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
 
 public class LoadingScreen extends AbstractScreen {
 
@@ -18,27 +18,35 @@ public class LoadingScreen extends AbstractScreen {
 
     public LoadingScreen(TheGame game) {
         super(game);
-        initScreen();
+        initialize();
         shapeRenderer = new ShapeRenderer();
         progress = 0f;
-        game.loadAssets();
+        game.getResources().loadAssets();
     }
 
     @Override
     public void render(float deltaTime) {
         super.render(deltaTime);
-        game.appTime += deltaTime;
-        progress = game.assetManager.getProgress();
-        if (game.assetManager.update()) {
-            game.loadClasses();
+        game.getTimeManager().addToAppTime(deltaTime);
+        progress = game.getResources().getAssetManager().getProgress();
+        if (game.getResources().getAssetManager().update()) {
+            game.loadRest();
             game.setScreen(new StartScreen(game));
         } else {
-            shapeRenderer.setProjectionMatrix(game.spriteBatch.getProjectionMatrix());
+            shapeRenderer.setProjectionMatrix(game.getSpriteBatch().getProjectionMatrix());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(0x323232ff));
-            shapeRenderer.rect(viewport.getWorldWidth() / 4, viewport.getWorldHeight() / 8, viewport.getWorldWidth() / 2, 15);
+            shapeRenderer.rect(
+                    game.getViewportUI().getWorldWidth() / 4,
+                    game.getViewportUI().getWorldHeight() / 8,
+                    game.getViewportUI().getWorldWidth() / 2,
+                    15);
             shapeRenderer.setColor(new Color(0x5050c8ff));
-            shapeRenderer.rect(viewport.getWorldWidth() / 4, viewport.getWorldHeight() / 8, progress * (viewport.getWorldWidth() / 2), 15);
+            shapeRenderer.rect(
+                    game.getViewportUI().getWorldWidth() / 4,
+                    game.getViewportUI().getWorldHeight() / 8,
+                    progress * (game.getViewportUI().getWorldWidth() / 2),
+                    15);
             shapeRenderer.end();
         }
     }
@@ -49,9 +57,11 @@ public class LoadingScreen extends AbstractScreen {
         super.dispose();
     }
 
-    private void initScreen() {
-        Image imageGame = new Image(new TextureRegionDrawable(new TextureRegion(game.getStartTexture("game_logo"))));
-        Label lInstruction = new Label("Loading...", game.styles.skinLabelTitle3);
+    private void initialize() {
+        Image imageGame = new Image(new TextureRegionDrawable(new TextureRegion(
+                game.getResources().getTextureBeforeAllLoaded("game_logo"))));
+        Label lInstruction = new Label("Loading...",
+                game.getResources().getStyles().getLabelStyleRedMedium());
 
         Table tableContent = new Table();
         tableContent.add(imageGame).align(Align.center).expand().width(300).height(300);
@@ -60,7 +70,8 @@ public class LoadingScreen extends AbstractScreen {
 
         Table table = new Table();
         table.setFillParent(true);
-        table.background(new TextureRegionDrawable(new TextureRegion(game.getStartTexture("background"))));
+        table.background(new TextureRegionDrawable(new TextureRegion(
+                game.getResources().getTextureBeforeAllLoaded("background"))));
         table.add(tableContent).align(Align.center).grow().pad(Constants.PAD_SCREEN);
 
         stage.addActor(table);

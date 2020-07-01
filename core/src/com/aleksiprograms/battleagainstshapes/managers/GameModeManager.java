@@ -1,6 +1,5 @@
 package com.aleksiprograms.battleagainstshapes.managers;
 
-import com.aleksiprograms.battleagainstshapes.TheGame;
 import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.aleksiprograms.battleagainstshapes.toolbox.GameMode;
 
@@ -9,7 +8,6 @@ import com.aleksiprograms.battleagainstshapes.toolbox.GameMode;
  */
 public class GameModeManager {
 
-    private TheGame game;
     private GameMode[] gameModes = new GameMode[Constants.GAME_MODES];
     private int[] gameModeIds = {
             Constants.GAME_MODE_ID_EASY,
@@ -17,18 +15,19 @@ public class GameModeManager {
             Constants.GAME_MODE_ID_HARD};
     private String[] gameModeNames = {"EASY", "MEDIUM", "HARD"};
     private String[] gameModeImageNames = {
-            Constants.TEX_SRC_GMAE_MODE_EASY,
-            Constants.TEX_SRC_GMAE_MODE_MEDIUM,
-            Constants.TEX_SRC_GMAE_MODE_HARD};
+            Constants.TEXTURE_UI_GAME_MODE_EASY,
+            Constants.TEXTURE_UI_GAME_MODE_MEDIUM,
+            Constants.TEXTURE_UI_GAME_MODE_HARD};
 
-    public GameModeManager(TheGame game) {
-        this.game = game;
+    public GameModeManager() {
         for (int i = 0; i < Constants.GAME_MODES; i++) {
             gameModes[i] = new GameMode(
                     gameModeIds[i],
                     gameModeNames[i],
                     gameModeImageNames[i],
-                    100, 1000, 2000);
+                    100,
+                    1000,
+                    2000);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.aleksiprograms.battleagainstshapes.resources;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,14 +9,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.aleksiprograms.battleagainstshapes.TheGame;
 
 /**
  * Holds UI styles of the game.
@@ -26,230 +23,179 @@ public class Styles {
     private final Color colorGreen = new Color(0x50c850ff);
     private final Color colorRed = new Color(0xc85050ff);
     private final Color colorWhite = new Color(0xffffffff);
-    private final Color colorDis = new Color(0x3c3c3cff);
-    private final Color colorGold = new Color(0xffd700ff);
-    private final Color colorSilver = new Color(0xc0c0c0ff);
-    private final Color colorBronze = new Color(0xcd7f32ff);
+    private final Color colorDisabled = new Color(0x3c3c3cff);
 
-    private final String FONT = "roboto_ttf/RobotoCondensed-Regular.ttf";
+    private FreeTypeFontGenerator fontGenerator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
 
-    public Skin skinLabelTitle1;
-    public Skin skinLabelTitle2;
-    public Skin skinLabelTitle3;
-    public Skin skinLabelNumberText;
-    public Skin skinLabelLimitsText;
-    public Skin skinLabelInGameTitle;
-    public Skin skinLabelInGameText;
-    public Skin skinLabelSettingsTitle;
-    public Skin skinLabelSettingsText;
-    public Skin skinLabelCreditTitle;
-    public Skin skinLabelCreditText;
-    public Skin skinLabelStatsTitle;
-    public Skin skinLabelStatsSubTitle;
-    public Skin skinLabelStatsText;
+    private Label.LabelStyle labelStyleBlueHuge;
+    private Label.LabelStyle labelStyleGreenBig;
+    private Label.LabelStyle labelStyleRedMedium;
+    private Label.LabelStyle labelStyleWhiteMedium;
+    private Label.LabelStyle labelStyleWhiteSmall;
+    private Label.LabelStyle labelStyleBlueSmall;
+    private Label.LabelStyle labelStyleGreenSmall;
+    private Label.LabelStyle labelStyleRedSmall;
 
-    public Label.LabelStyle labelStyleLoggedInGPGS;
-    public Label.LabelStyle labelStyleLoggedOutGPGS;
-    public Skin skinLabelDialogText;
+    private Label.LabelStyle labelStyleDialogText;
 
-    public Skin skinScrollPane;
-    public Skin skinDialogBox;
-    public Skin skinSlider;
-    public Skin skinSelectBox;
+    private ScrollPane.ScrollPaneStyle scrollPaneStyle;
+    private Dialog.WindowStyle dialogBoxStyle;
+    private Slider.SliderStyle sliderStyle;
 
-    public Skin skinButton;
-    public Skin skinButtonDialog;
-    public Skin skinButtonWeaponSelect;
-    public Skin skinButtonLanguage;
+    private TextButton.TextButtonStyle textButtonStyleDialog;
+    private TextButton.TextButtonStyle textButtonStyleWeaponSelect;
 
-    public Skin skinImageButtonLeaderboard;
-    public Skin skinImageButtonAchievements;
-    public Skin skinImageButtonStats;
-    public Skin skinImageButtonSettings;
-    public Skin skinImageButtonCredits;
-    public Skin skinImageButtonPlay;
-    public Skin skinImageButtonHome;
-    public Skin skinImageButtonPause;
-    public Skin skinImageButtonReplay;
-    public Skin skinImageButtonMoveUp;
-    public Skin skinImageButtonMoveDown;
-    public Skin skinImageButtonUsePriWea;
-    public Skin skinImageButtonUseSecWea;
+    private ImageButton.ImageButtonStyle imageButtonStyleStats;
+    private ImageButton.ImageButtonStyle imageButtonStyleSettings;
+    private ImageButton.ImageButtonStyle imageButtonStyleCredits;
+    private ImageButton.ImageButtonStyle imageButtonStylePlay;
+    private ImageButton.ImageButtonStyle imageButtonStyleHome;
+    private ImageButton.ImageButtonStyle imageButtonStylePause;
+    private ImageButton.ImageButtonStyle imageButtonStyleReplay;
+    private ImageButton.ImageButtonStyle imageButtonStyleMoveUp;
+    private ImageButton.ImageButtonStyle imageButtonStyleMoveDown;
+    private ImageButton.ImageButtonStyle imageButtonStyleUsePriWea;
+    private ImageButton.ImageButtonStyle imageButtonStyleUseSecWea;
 
     public Styles() {
-        skinLabelTitle1 = getSkinLabel(FONT, 80, colorBlue);
-        skinLabelTitle2 = getSkinLabel(FONT, 50, colorGreen);
-        skinLabelTitle3 = getSkinLabel(FONT, 40, colorRed);
-        skinLabelNumberText = getSkinLabel(FONT, 40, colorWhite);
-        skinLabelLimitsText = getSkinLabel(FONT, 35, colorWhite);
-        skinLabelInGameTitle = getSkinLabel(FONT, 35, colorBlue);
-        skinLabelInGameText = getSkinLabel(FONT, 35, colorWhite);
-        skinLabelSettingsTitle = getSkinLabel(FONT, 35, colorGreen);
-        skinLabelSettingsText = getSkinLabel(FONT, 28, colorWhite);
-        skinLabelCreditTitle = getSkinLabel(FONT, 35, colorGreen);
-        skinLabelCreditText = getSkinLabel(FONT, 35, colorWhite);
-        skinLabelStatsTitle = getSkinLabel(FONT, 35, colorGreen);
-        skinLabelStatsSubTitle = getSkinLabel(FONT, 35, colorRed);
-        skinLabelStatsText = getSkinLabel(FONT, 35, colorWhite);
+        fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.FONT));
+        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-        labelStyleLoggedInGPGS = getLabelStyle(FONT, 35, colorGreen);
-        labelStyleLoggedOutGPGS = getLabelStyle(FONT, 35, colorRed);
+        labelStyleBlueHuge = getLabelStyle(80, colorBlue);
+        labelStyleGreenBig = getLabelStyle(50, colorGreen);
+        labelStyleRedMedium = getLabelStyle(40, colorRed);
+        labelStyleWhiteMedium = getLabelStyle(40, colorWhite);
+        labelStyleWhiteSmall = getLabelStyle(35, colorWhite);
+        labelStyleBlueSmall = getLabelStyle(35, colorBlue);
+        labelStyleGreenSmall = getLabelStyle(35, colorGreen);
+        labelStyleRedSmall = getLabelStyle(35, colorRed);
     }
 
-    public void loadTextureStyles(TheGame game) {
-        skinLabelDialogText = getSkinLabel(FONT, 45, colorWhite,
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLACK)));
+    public void loadRest(TheGame game) {
+        labelStyleDialogText = getLabelStyle(45, colorWhite,
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_BLACK)));
 
-        skinScrollPane = getSkinScrollPane(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_GREY)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLUE)));
-        skinDialogBox = getSkinDialogBox(FONT, 50, colorWhite,
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLUE)));
-        skinSlider = getSkinSlider(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_GREY)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLUE)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_KNOB)));
-        skinSelectBox = getSkinSelectBox(FONT, 45, colorBlue, colorWhite,
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLACK)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_GREY)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLUE)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_GREY)));
+        scrollPaneStyle = getScrollPaneStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_GREY)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_BLUE)));
+        dialogBoxStyle = getDialogBoxStyle(50, colorWhite,
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_BLUE)));
+        sliderStyle = getSliderStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_GREY)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_BLUE)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_KNOB)));
 
-        skinButton = getSkinTextButton(
-                FONT, 45, colorWhite, colorBlue, colorWhite, colorDis);
-        skinButtonDialog = getSkinTextImageButton(
-                FONT, 45, colorWhite, colorBlue, colorWhite, colorDis,
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLACK)));
-        skinButtonWeaponSelect = getSkinTextImageButton(
-                FONT, 30, colorWhite, colorBlue, colorBlue, colorDis,
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_RECTANGLE_BLACK)));
-        skinButtonLanguage = getSkinTextButton(
-                FONT, 45, colorWhite, colorBlue, colorBlue, colorDis);
+        textButtonStyleDialog = getTextImageButtonStyle(
+                45, colorWhite, colorBlue, colorWhite, colorDisabled,
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_BLACK)));
+        textButtonStyleWeaponSelect = getTextImageButtonStyle(
+                30, colorWhite, colorBlue, colorBlue, colorDisabled,
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_RECTANGLE_BLACK)));
 
-        skinImageButtonStats = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_STATS_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_STATS_D)));
-        skinImageButtonSettings = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_SETTINGS_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_SETTINGS_D)));
-        skinImageButtonCredits = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_CREDITS_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_CREDITS_D)));
-        skinImageButtonPlay = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_PLAY_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_PLAY_D)));
-        skinImageButtonHome = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_HOME_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_HOME_D)));
-        skinImageButtonPause = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_PAUSE_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_PAUSE_D)));
-        skinImageButtonReplay = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_REPLAY_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_REPLAY_D)));
+        imageButtonStyleStats = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_STATS_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_STATS_D)));
+        imageButtonStyleSettings = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_SETTINGS_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_SETTINGS_D)));
+        imageButtonStyleCredits = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_CREDITS_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_CREDITS_D)));
+        imageButtonStylePlay = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_PLAY_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_PLAY_D)));
+        imageButtonStyleHome = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_HOME_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_HOME_D)));
+        imageButtonStylePause = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_PAUSE_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_PAUSE_D)));
+        imageButtonStyleReplay = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_REPLAY_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_REPLAY_D)));
 
-        skinImageButtonMoveUp = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_MOVE_UP_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_MOVE_UP_D)));
-        skinImageButtonMoveDown = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_MOVE_DOWN_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_MOVE_DOWN_D)));
-        skinImageButtonUsePriWea = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_USE_PRI_WEA_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_USE_PRI_WEA_D)));
-        skinImageButtonUseSecWea = getSkinImageButton(
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_USE_SEC_WEA_U)),
-                new TextureRegionDrawable(game.getTextureRegionByID(Constants.TEX_SRC_BUTTON_USE_SEC_WEA_D)));
+        imageButtonStyleMoveUp = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_MOVE_UP_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_MOVE_UP_D)));
+        imageButtonStyleMoveDown = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_MOVE_DOWN_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_MOVE_DOWN_D)));
+        imageButtonStyleUsePriWea = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_USE_PRI_WEA_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_USE_PRI_WEA_D)));
+        imageButtonStyleUseSecWea = getImageButtonStyle(
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_USE_SEC_WEA_U)),
+                new TextureRegionDrawable(game.getResources().getTextureRegionByID(
+                        Constants.TEXTURE_UI_BUTTON_USE_SEC_WEA_D)));
     }
 
-    public static void dispose() {}
-
-    private BitmapFont getFont(
-            String fontFilePath,
-            int fontSize) {
-        BitmapFont font;
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontFilePath));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = fontSize;
-        parameter.minFilter = Texture.TextureFilter.Linear;
-        parameter.magFilter = Texture.TextureFilter.Linear;
-        font = generator.generateFont(parameter);
-        generator.dispose();
-        return font;
-    }
-
-    private Skin getSkinLabel(
-            String fontFilePath,
-            int fontSize,
-            Color fontColor) {
-        Skin skin = new Skin();
-        skin.add("default", getFont(fontFilePath, fontSize));
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = skin.getFont("default");
-        labelStyle.fontColor = fontColor;
-        skin.add("default", labelStyle);
-        return skin;
-    }
-
-    private Skin getSkinLabel(
-            String fontFilePath,
-            int fontSize,
-            Color fontColor,
-            TextureRegionDrawable background) {
-        Skin skin = new Skin();
-        skin.add("default", getFont(fontFilePath, fontSize));
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = skin.getFont("default");
-        labelStyle.fontColor = fontColor;
-        labelStyle.background = background;
-        skin.add("default", labelStyle);
-        return skin;
+    private BitmapFont getFont(int fontSize) {
+        fontParameter.size = fontSize;
+        fontParameter.minFilter = Texture.TextureFilter.Linear;
+        fontParameter.magFilter = Texture.TextureFilter.Linear;
+        return fontGenerator.generateFont(fontParameter);
     }
 
     private Label.LabelStyle getLabelStyle(
-            String fontFilePath,
             int fontSize,
             Color fontColor) {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = getFont(fontFilePath, fontSize);
+        labelStyle.font = getFont(fontSize);
         labelStyle.fontColor = fontColor;
         return labelStyle;
     }
 
-    private Skin getSkinTextButton(
-            String fontFilePath,
+    private Label.LabelStyle getLabelStyle(
             int fontSize,
-            Color fontColorUp,
-            Color fontColorDown,
-            Color fontColorChecked,
-            Color fontColorDisabled) {
-        Skin skin = new Skin();
-        skin.add("default", getFont(fontFilePath, fontSize));
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = skin.getFont("default");
-        textButtonStyle.fontColor = fontColorUp;
-        textButtonStyle.downFontColor = fontColorDown;
-        textButtonStyle.checkedFontColor = fontColorChecked;
-        textButtonStyle.overFontColor = fontColorChecked;
-        textButtonStyle.checkedOverFontColor = fontColorChecked;
-        textButtonStyle.disabledFontColor = fontColorDisabled;
-        skin.add("default", textButtonStyle);
-        return skin;
+            Color fontColor,
+            TextureRegionDrawable background) {
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = getFont(fontSize);
+        labelStyle.fontColor = fontColor;
+        labelStyle.background = background;
+        return labelStyle;
     }
 
-    private Skin getSkinTextImageButton(
-            String fontFilePath,
+    private TextButton.TextButtonStyle getTextImageButtonStyle(
             int fontSize,
             Color fontColorUp,
             Color fontColorDown,
             Color fontColorChecked,
             Color fontColorDisabled,
             TextureRegionDrawable background) {
-        Skin skin = new Skin();
-        skin.add("default", getFont(fontFilePath, fontSize));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = skin.getFont("default");
+        textButtonStyle.font = getFont(fontSize);
         textButtonStyle.fontColor = fontColorUp;
         textButtonStyle.downFontColor = fontColorDown;
         textButtonStyle.checkedFontColor = fontColorChecked;
@@ -258,92 +204,42 @@ public class Styles {
         textButtonStyle.disabledFontColor = fontColorDisabled;
         textButtonStyle.up = background;
         textButtonStyle.down = background;
-        skin.add("default", textButtonStyle);
-        return skin;
+        return textButtonStyle;
     }
 
-    private Skin getSkinImageButton(
+    private ImageButton.ImageButtonStyle getImageButtonStyle(
             TextureRegionDrawable textureUp,
             TextureRegionDrawable textureDown) {
-        Skin skin = new Skin();
         ImageButton.ImageButtonStyle imageButtonStyle = new ImageButton.ImageButtonStyle();
         imageButtonStyle.up = textureUp;
         imageButtonStyle.down = textureDown;
-        skin.add("default", imageButtonStyle);
-        return skin;
+        return imageButtonStyle;
     }
 
-    private Skin getSkinImageButton(
-            TextureRegionDrawable textureUp,
-            TextureRegionDrawable textureDown,
-            TextureRegionDrawable textureDisabled) {
-        Skin skin = new Skin();
-        ImageButton.ImageButtonStyle imageButtonStyle = new ImageButton.ImageButtonStyle();
-        imageButtonStyle.up = textureUp;
-        imageButtonStyle.down = textureDown;
-        imageButtonStyle.disabled = textureDisabled;
-        skin.add("default", imageButtonStyle);
-        return skin;
-    }
-
-    private Skin getSkinScrollPane(
+    private ScrollPane.ScrollPaneStyle getScrollPaneStyle(
             TextureRegionDrawable scroll,
             TextureRegionDrawable scrollKnob) {
-        Skin skin = new Skin();
-        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle(null, scroll, scrollKnob, scroll, scrollKnob);
-        skin.add("default", scrollPaneStyle);
-        return skin;
+        return new ScrollPane.ScrollPaneStyle(null, scroll, scrollKnob, scroll, scrollKnob);
     }
 
-    private Skin getSkinDialogBox(
-            String fontFilePath,
+    private Dialog.WindowStyle getDialogBoxStyle(
             int fontSize,
             Color fontColorLabel,
             TextureRegionDrawable background) {
-        Skin skin = new Skin();
-        skin.add("default", getFont(fontFilePath, fontSize));
         Dialog.WindowStyle windowStyle = new Dialog.WindowStyle();
         windowStyle.background = new TextureRegionDrawable(background);
-        windowStyle.titleFont = skin.getFont("default");
+        windowStyle.titleFont = getFont(fontSize);
         windowStyle.titleFontColor = fontColorLabel;
-        skin.add("default", windowStyle);
-        return skin;
+        return windowStyle;
     }
 
-    private Skin getSkinSlider(
+    private Slider.SliderStyle getSliderStyle(
             TextureRegionDrawable background,
             TextureRegionDrawable knobBefore,
             TextureRegionDrawable knob) {
-        Skin skin = new Skin();
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle(background, knob);
         sliderStyle.knobBefore = knobBefore;
-        skin.add("default-horizontal", sliderStyle);
-        return skin;
-    }
-
-    private Skin getSkinSelectBox(
-            String fontFilePath,
-            int fontSize,
-            Color fontColorSelected,
-            Color fontColorUnselected,
-            TextureRegionDrawable background,
-            TextureRegionDrawable scroll,
-            TextureRegionDrawable scrollKnob,
-            TextureRegionDrawable selection) {
-        Skin skin = new Skin();
-        skin.add("default", getFont(fontFilePath, fontSize));
-        SelectBox.SelectBoxStyle selectBoxStyle = new SelectBox.SelectBoxStyle();
-        selectBoxStyle.background = background;
-        selectBoxStyle.font = skin.getFont("default");
-        selectBoxStyle.fontColor = fontColorUnselected;
-        selectBoxStyle.scrollStyle = new ScrollPane.ScrollPaneStyle(background, scroll, scrollKnob, scroll, scrollKnob);
-        selectBoxStyle.listStyle = new List.ListStyle(
-                getFont(fontFilePath, fontSize),
-                fontColorSelected,
-                fontColorUnselected,
-                selection);
-        skin.add("default", selectBoxStyle);
-        return skin;
+        return sliderStyle;
     }
 
     public String getFormattedScore(long score) {
@@ -357,7 +253,107 @@ public class Styles {
             x++;
         }
         if (formattedScore.charAt(0) == ' ')
-            formattedScore = formattedScore.substring(1, formattedScore.length());
+            formattedScore = formattedScore.substring(1);
         return formattedScore;
+    }
+
+    public Label.LabelStyle getLabelStyleBlueHuge() {
+        return labelStyleBlueHuge;
+    }
+
+    public Label.LabelStyle getLabelStyleGreenBig() {
+        return labelStyleGreenBig;
+    }
+
+    public Label.LabelStyle getLabelStyleRedMedium() {
+        return labelStyleRedMedium;
+    }
+
+    public Label.LabelStyle getLabelStyleWhiteMedium() {
+        return labelStyleWhiteMedium;
+    }
+
+    public Label.LabelStyle getLabelStyleWhiteSmall() {
+        return labelStyleWhiteSmall;
+    }
+
+    public Label.LabelStyle getLabelStyleBlueSmall() {
+        return labelStyleBlueSmall;
+    }
+
+    public Label.LabelStyle getLabelStyleGreenSmall() {
+        return labelStyleGreenSmall;
+    }
+
+    public Label.LabelStyle getLabelStyleRedSmall() {
+        return labelStyleRedSmall;
+    }
+
+    public Label.LabelStyle getLabelStyleDialogText() {
+        return labelStyleDialogText;
+    }
+
+    public ScrollPane.ScrollPaneStyle getScrollPaneStyle() {
+        return scrollPaneStyle;
+    }
+
+    public Dialog.WindowStyle getDialogBoxStyle() {
+        return dialogBoxStyle;
+    }
+
+    public Slider.SliderStyle getSliderStyle() {
+        return sliderStyle;
+    }
+
+    public TextButton.TextButtonStyle getTextButtonStyleDialog() {
+        return textButtonStyleDialog;
+    }
+
+    public TextButton.TextButtonStyle getTextButtonStyleWeaponSelect() {
+        return textButtonStyleWeaponSelect;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleStats() {
+        return imageButtonStyleStats;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleSettings() {
+        return imageButtonStyleSettings;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleCredits() {
+        return imageButtonStyleCredits;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStylePlay() {
+        return imageButtonStylePlay;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleHome() {
+        return imageButtonStyleHome;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStylePause() {
+        return imageButtonStylePause;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleReplay() {
+        return imageButtonStyleReplay;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleMoveUp() {
+        return imageButtonStyleMoveUp;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleMoveDown() {
+        return imageButtonStyleMoveDown;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleUsePriWea() {
+        return imageButtonStyleUsePriWea;
+    }
+
+    public ImageButton.ImageButtonStyle getImageButtonStyleUseSecWea() {
+        return imageButtonStyleUseSecWea;
     }
 }

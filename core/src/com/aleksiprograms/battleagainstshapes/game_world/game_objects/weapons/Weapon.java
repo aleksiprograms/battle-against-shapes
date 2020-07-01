@@ -9,28 +9,27 @@ import com.badlogic.gdx.utils.Pool;
 
 public abstract class Weapon implements Pool.Poolable {
 
-    public TheGame game;
-    public Sprite sprite;
-    public int ID;
-    public float xOffset;
-    public float yOffset;
-    public float shotDelay;
-    public float timeFromLastShot;
-    public boolean freeObject;
-    public boolean objectFreed;
+    protected TheGame game;
+    protected Sprite sprite;
+    protected int weaponID;
+    protected float xOffset;
+    protected float yOffset;
+    protected float shotDelay;
+    protected float timeFromLastShot;
+    protected boolean freeObject;
+    protected boolean objectFreed;
 
     public Weapon(
             TheGame game,
             TextureRegion textureRegion,
-            int ID,
+            int weaponID,
             float shotDelay,
             float width,
             float height,
             float xOffset,
             float yOffset) {
-
         this.game = game;
-        this.ID = ID;
+        this.weaponID = weaponID;
         this.shotDelay = shotDelay;
         timeFromLastShot = shotDelay;
         this.xOffset = xOffset;
@@ -46,13 +45,14 @@ public abstract class Weapon implements Pool.Poolable {
         objectFreed = false;
     }
 
-    public void init() {}
-
     public void update(float deltaTime) {
         timeFromLastShot += deltaTime;
-        float angle = game.player.fighter.box2DBody.getAngle() * MathUtils.radiansToDegrees;
-        float xPos = game.player.fighter.box2DBody.getPosition().x - sprite.getWidth() / 2;
-        float yPos = game.player.fighter.box2DBody.getPosition().y - sprite.getHeight() / 2;
+        float angle = game.getGameWorld().getPlayer().getFighter().getBox2DBody().getAngle()
+                * MathUtils.radiansToDegrees;
+        float xPos = game.getGameWorld().getPlayer().getFighter().getBox2DBody().getPosition().x
+                - sprite.getWidth() / 2;
+        float yPos = game.getGameWorld().getPlayer().getFighter().getBox2DBody().getPosition().y
+                - sprite.getHeight() / 2;
         sprite.setPosition(
                 xPos + xOffset * MathUtils.cosDeg(angle) - yOffset * MathUtils.sinDeg(angle),
                 yPos + xOffset * MathUtils.sinDeg(angle) + yOffset * MathUtils.cosDeg(angle));
@@ -65,4 +65,8 @@ public abstract class Weapon implements Pool.Poolable {
     }
 
     public abstract void shoot();
+
+    public int getWeaponID() {
+        return weaponID;
+    }
 }

@@ -1,50 +1,53 @@
 package com.aleksiprograms.battleagainstshapes.resources;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Holds all physical definitions of the game objects for example linear damping, density and friction.
+ * Holds all physical definitions of the game objects
+ * for example linear damping, density and friction.
  */
 public class PhysicalDefinitions {
 
-    public TheGame game;
-    public PhysicalDef pdFighter;
-    public PhysicalDef pdWall;
-    public PhysicalDef pdBlade;
-    public PhysicalDef pdDynamite;
-    public PhysicalDef pdBullet;
-    public PhysicalDef pdGrenade;
-    public PhysicalDef pdKnife;
-    public PhysicalDef pdRocket;
-    public PhysicalDef pdShot;
-    public PhysicalDef pdFlamethrowerParticle;
-    public PhysicalDef pdExplosionParticle;
-    public PhysicalDef pdFighterExplosionParticle;
-    public PhysicalDef pdFighterFlameParticle;
-    public PhysicalDef pdEnemyCircle;
-    public PhysicalDef pdEnemyEllipse;
-    public PhysicalDef pdEnemyPentagon;
-    public PhysicalDef pdEnemyRectangle;
-    public PhysicalDef pdEnemySemicircle;
-    public PhysicalDef pdEnemySquare;
-    public PhysicalDef pdEnemyStar;
-    public PhysicalDef pdEnemyTriangle;
-    public PhysicalDef pdEnemyCircleAmmunition;
-    public PhysicalDef pdEnemyPentagonAmmunition;
-    public PhysicalDef pdEnemyRectangleAmmunition;
-    public PhysicalDef pdEnemySemicircleAmmunition;
-    public PhysicalDef pdEnemyStarAmmunition;
-    public PhysicalDef pdEnemyTriangleAmmunition;
+    private PhysicalDef fighterPhyDef;
+    private PhysicalDef invisibleWallPhyDef;
+    private PhysicalDef bladePhyDef;
+    private PhysicalDef dynamitePhyDef;
+    private PhysicalDef bulletPhyDef;
+    private PhysicalDef grenadePhyDef;
+    private PhysicalDef knifePhyDef;
+    private PhysicalDef rocketPhyDef;
+    private PhysicalDef shotPhyDef;
+    private PhysicalDef flamethrowerParticlePhyDef;
+    private PhysicalDef explosionParticlePhyDef;
+    private PhysicalDef fighterExplosionParticlePhyDef;
+    private PhysicalDef fighterFlameParticlePhyDef;
+    private PhysicalDef enemyCirclePhyDef;
+    private PhysicalDef enemyEllipsePhyDef;
+    private PhysicalDef enemyPentagonPhyDef;
+    private PhysicalDef enemyRectanglePhyDef;
+    private PhysicalDef enemySemicirclePhyDef;
+    private PhysicalDef enemySquarePhyDef;
+    private PhysicalDef enemyStarPhyDef;
+    private PhysicalDef enemyTrianglePhyDef;
+    private PhysicalDef enemyCircleAmmunitionPhyDef;
+    private PhysicalDef enemyPentagonAmmunitionPhyDef;
+    private PhysicalDef enemyRectangleAmmunitionPhyDef;
+    private PhysicalDef enemySemicircleAmmunitionPhyDef;
+    private PhysicalDef enemyStarAmmunitionPhyDef;
+    private PhysicalDef enemyTriangleAmmunitionPhyDef;
 
     public PhysicalDefinitions(TheGame game) {
-        this.game = game;
+        initialize(game);
+    }
+
+    private void initialize(TheGame game) {
         Array<BodyDef> bodyDefs = new Array<BodyDef>();
         Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
-        
+
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
         bodyDefs.peek().type = BodyDef.BodyType.DynamicBody;
@@ -53,14 +56,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 2.5f;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.fighterShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getFighterShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER;
         fixtureDefs.peek().density = 1.5f;
         fixtureDefs.peek().friction = 0.1f;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdFighter = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        fighterPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -70,14 +73,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.wallShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getInvisibleWallShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_LEVEL_WALL;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_LEVEL_WALL;
         fixtureDefs.peek().density = 0;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdWall = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        invisibleWallPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -87,14 +90,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.bladeShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getBladeShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 30;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = true;
-        pdBlade = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        bladePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -104,14 +107,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 1;
-        fixtureDefs.peek().shape = game.shapes.dynamiteShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getDynamiteShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 3;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdDynamite = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        dynamitePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -121,14 +124,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.bulletShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getBulletShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 3;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdBullet = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        bulletPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -138,14 +141,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.grenadeShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getGrenadeShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 3;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdGrenade = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        grenadePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -155,14 +158,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0.5f;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.knifeShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getKnifeShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = true;
-        pdKnife = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        knifePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -172,14 +175,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.rocketShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getRocketShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 3;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdRocket = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        rocketPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -189,14 +192,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.shotShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getShotShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_AMMUNITION;
         fixtureDefs.peek().density = 3;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdShot = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        shotPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -206,14 +209,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.particleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getParticleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_IGNORING_PARTICLE;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_IGNORING_PARTICLE;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdFlamethrowerParticle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        flamethrowerParticlePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -223,14 +226,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.particleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getParticleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_GENERAL_PARTICLE;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_GENERAL_PARTICLE;
         fixtureDefs.peek().density = 150;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdExplosionParticle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        explosionParticlePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -240,14 +243,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.particleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getParticleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_IGNORING_PARTICLE;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_IGNORING_PARTICLE;
         fixtureDefs.peek().density = 150;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdFighterExplosionParticle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        fighterExplosionParticlePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -257,14 +260,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.particleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getParticleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_PLAYER_IGNORING_PARTICLE;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_PLAYER_IGNORING_PARTICLE;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdFighterFlameParticle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        fighterFlameParticlePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -274,14 +277,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyCircleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyCircleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyCircle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyCirclePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -291,14 +294,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyEllipseShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyEllipseShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyEllipse = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyEllipsePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -308,14 +311,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyPentagonShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyPentagonShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyPentagon = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyPentagonPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -325,14 +328,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyRectangleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyRectangleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyRectangle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyRectanglePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -342,14 +345,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemySemicircleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemySemicircleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemySemicircle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemySemicirclePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -359,14 +362,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemySquareShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemySquareShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemySquare = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemySquarePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -376,14 +379,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyStarShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyStarShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyStar = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyStarPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -393,14 +396,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 1;
         bodyDefs.peek().fixedRotation = false;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyTriangleShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyTriangleShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY;
         fixtureDefs.peek().density = 1;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyTriangle = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyTrianglePhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -410,14 +413,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyCircleAmmunitionShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyCircleAmmunitionShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY_AMMUNITION;
         fixtureDefs.peek().density = 0.1f;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyCircleAmmunition = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyCircleAmmunitionPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -427,14 +430,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyPentagonAmmunitionShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyPentagonAmmunitionShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY_AMMUNITION;
         fixtureDefs.peek().density = 0.1f;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyPentagonAmmunition = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyPentagonAmmunitionPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -444,14 +447,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyRectangleAmmunitionShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyRectangleAmmunitionShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY_AMMUNITION;
         fixtureDefs.peek().density = 0.1f;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyRectangleAmmunition = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyRectangleAmmunitionPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -461,14 +464,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemySemicircleAmmunitionShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemySemicircleAmmunitionShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY_AMMUNITION;
         fixtureDefs.peek().density = 0.1f;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemySemicircleAmmunition = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemySemicircleAmmunitionPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -478,14 +481,14 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyStarAmmunitionShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyStarAmmunitionShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY_AMMUNITION;
         fixtureDefs.peek().density = 0.1f;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyStarAmmunition = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyStarAmmunitionPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
 
         bodyDefs.add(new BodyDef());
         fixtureDefs.add(new FixtureDef());
@@ -495,13 +498,121 @@ public class PhysicalDefinitions {
         bodyDefs.peek().angularDamping = 0;
         bodyDefs.peek().fixedRotation = true;
         bodyDefs.peek().gravityScale = 0;
-        fixtureDefs.peek().shape = game.shapes.enemyTriangleAmmunitionShape;
+        fixtureDefs.peek().shape = game.getResources().getPhysicalShapes().getEnemyTriangleAmmunitionShape();
         fixtureDefs.peek().filter.categoryBits = Constants.CATEGORY_ENEMY_AMMUNITION;
         fixtureDefs.peek().filter.maskBits = Constants.MASK_ENEMY_AMMUNITION;
         fixtureDefs.peek().density = 0.1f;
         fixtureDefs.peek().friction = 0;
         fixtureDefs.peek().restitution = 0;
         fixtureDefs.peek().isSensor = false;
-        pdEnemyTriangleAmmunition = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+        enemyTriangleAmmunitionPhyDef = new PhysicalDef(bodyDefs.peek(), fixtureDefs.peek());
+    }
+
+    public PhysicalDef getFighterPhyDef() {
+        return fighterPhyDef;
+    }
+
+    public PhysicalDef getInvisibleWallPhyDef() {
+        return invisibleWallPhyDef;
+    }
+
+    public PhysicalDef getBladePhyDef() {
+        return bladePhyDef;
+    }
+
+    public PhysicalDef getDynamitePhyDef() {
+        return dynamitePhyDef;
+    }
+
+    public PhysicalDef getBulletPhyDef() {
+        return bulletPhyDef;
+    }
+
+    public PhysicalDef getGrenadePhyDef() {
+        return grenadePhyDef;
+    }
+
+    public PhysicalDef getKnifePhyDef() {
+        return knifePhyDef;
+    }
+
+    public PhysicalDef getRocketPhyDef() {
+        return rocketPhyDef;
+    }
+
+    public PhysicalDef getShotPhyDef() {
+        return shotPhyDef;
+    }
+
+    public PhysicalDef getFlamethrowerParticlePhyDef() {
+        return flamethrowerParticlePhyDef;
+    }
+
+    public PhysicalDef getExplosionParticlePhyDef() {
+        return explosionParticlePhyDef;
+    }
+
+    public PhysicalDef getFighterExplosionParticlePhyDef() {
+        return fighterExplosionParticlePhyDef;
+    }
+
+    public PhysicalDef getFighterFlameParticlePhyDef() {
+        return fighterFlameParticlePhyDef;
+    }
+
+    public PhysicalDef getEnemyCirclePhyDef() {
+        return enemyCirclePhyDef;
+    }
+
+    public PhysicalDef getEnemyEllipsePhyDef() {
+        return enemyEllipsePhyDef;
+    }
+
+    public PhysicalDef getEnemyPentagonPhyDef() {
+        return enemyPentagonPhyDef;
+    }
+
+    public PhysicalDef getEnemyRectanglePhyDef() {
+        return enemyRectanglePhyDef;
+    }
+
+    public PhysicalDef getEnemySemicirclePhyDef() {
+        return enemySemicirclePhyDef;
+    }
+
+    public PhysicalDef getEnemySquarePhyDef() {
+        return enemySquarePhyDef;
+    }
+
+    public PhysicalDef getEnemyStarPhyDef() {
+        return enemyStarPhyDef;
+    }
+
+    public PhysicalDef getEnemyTrianglePhyDef() {
+        return enemyTrianglePhyDef;
+    }
+
+    public PhysicalDef getEnemyCircleAmmunitionPhyDef() {
+        return enemyCircleAmmunitionPhyDef;
+    }
+
+    public PhysicalDef getEnemyPentagonAmmunitionPhyDef() {
+        return enemyPentagonAmmunitionPhyDef;
+    }
+
+    public PhysicalDef getEnemyRectangleAmmunitionPhyDef() {
+        return enemyRectangleAmmunitionPhyDef;
+    }
+
+    public PhysicalDef getEnemySemicircleAmmunitionPhyDef() {
+        return enemySemicircleAmmunitionPhyDef;
+    }
+
+    public PhysicalDef getEnemyStarAmmunitionPhyDef() {
+        return enemyStarAmmunitionPhyDef;
+    }
+
+    public PhysicalDef getEnemyTriangleAmmunitionPhyDef() {
+        return enemyTriangleAmmunitionPhyDef;
     }
 }

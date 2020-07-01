@@ -1,27 +1,26 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
 
 /**
- * Draws and updates the texture/sprite of a game object.
+ * Used to make game objects with texture/sprite.
  */
-public abstract class DrawableGameObject extends GameObject {
+public abstract class DrawablePhysicalGameObject extends PhysicalGameObject {
 
-    public Sprite sprite;
+    protected Sprite sprite;
 
-    public DrawableGameObject(
+    public DrawablePhysicalGameObject(
             TheGame game,
             TextureRegion textureRegion,
             PhysicalDef physicalDef,
             float width,
             float height,
             boolean breakable) {
-
         super(game, physicalDef, width, height, breakable);
         sprite = new Sprite(textureRegion);
         sprite.setSize(width, height);
@@ -39,6 +38,7 @@ public abstract class DrawableGameObject extends GameObject {
 
     /**
      * Draws the game object or the sprite.
+     *
      * @param spriteBatch sprite batch
      */
     public void draw(SpriteBatch spriteBatch) {

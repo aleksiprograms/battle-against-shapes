@@ -10,15 +10,14 @@ import java.io.Serializable;
 public class SaveData implements Serializable {
 
     private static class GameModeData {
-        int index;
+        int gameModeID;
         long score;
         long distance;
         int stars;
     }
 
     private static class WeaponData {
-        int ID;
-        boolean unlocked;
+        int weaponID;
         long kills;
         long ammunitionsFired;
         long ammunitionsHit;
@@ -26,39 +25,34 @@ public class SaveData implements Serializable {
 
     private long appTime;
     private long gameTime;
-    private float homeScreenScrollX;
-    private float priWeaScrollY;
-    private float secWeaScrollY;
-    private int primaryWeapon;
-    private int secondaryWeapon;
+    private int selectedPrimaryWeapon;
+    private int selectedSecondaryWeapon;
     private long fighterKills;
     private float soundVolume;
-    private Array<GameModeData> levelDataArray;
+    private Array<GameModeData> gameModeDataArray;
     private Array<WeaponData> weaponDataArray;
 
     public SaveData() {
         appTime = 0;
         gameTime = 0;
-        homeScreenScrollX = 0;
-        primaryWeapon = 0;
-        secondaryWeapon = 1;
+        selectedPrimaryWeapon = 0;
+        selectedSecondaryWeapon = 1;
         fighterKills = 0;
         soundVolume = 0.5f;
 
-        levelDataArray = new Array<GameModeData>();
+        gameModeDataArray = new Array<GameModeData>();
         for (int i = 0; i < Constants.GAME_MODES; i++) {
             GameModeData gameModeData = new GameModeData();
-            gameModeData.index = i;
+            gameModeData.gameModeID = i;
             gameModeData.score = 0;
             gameModeData.distance = 0;
             gameModeData.stars = 0;
-            levelDataArray.add(gameModeData);
+            this.gameModeDataArray.add(gameModeData);
         }
         weaponDataArray = new Array<WeaponData>();
         for (int i = 0; i < 8; i++) {
             WeaponData weaponData = new WeaponData();
-            weaponData.ID = i;
-            weaponData.unlocked = false;
+            weaponData.weaponID = i;
             weaponData.kills = 0;
             weaponData.ammunitionsFired = 0;
             weaponData.ammunitionsHit = 0;
@@ -82,18 +76,10 @@ public class SaveData implements Serializable {
         this.gameTime += gameTime;
     }
 
-    public long getTotalScore() {
-        int score = 0;
-        for (int i = 0; i < levelDataArray.size; i++) {
-            score += levelDataArray.get(i).score;
-        }
-        return score;
-    }
-
     public long getTotalStars() {
         int stars = 0;
-        for (int i = 0; i < levelDataArray.size; i++) {
-            stars += levelDataArray.get(i).stars;
+        for (int i = 0; i < gameModeDataArray.size; i++) {
+            stars += gameModeDataArray.get(i).stars;
         }
         return stars;
     }
@@ -103,101 +89,79 @@ public class SaveData implements Serializable {
     }
 
     public void setSoundVolume(float soundVolume) {
-        if (soundVolume < 0)
+        if (soundVolume < 0) {
             soundVolume = 0;
-        if (soundVolume > 1)
+        }
+        if (soundVolume > 1) {
             soundVolume = 1;
+        }
         this.soundVolume = soundVolume;
     }
 
-    public int getPrimaryWeapon() {
-        return primaryWeapon;
+    public int getSelectedPrimaryWeapon() {
+        return selectedPrimaryWeapon;
     }
 
-    public void setPrimaryWeapon(int primaryWeapon) {
-        this.primaryWeapon = primaryWeapon;
+    public void setSelectedPrimaryWeapon(int selectedPrimaryWeapon) {
+        this.selectedPrimaryWeapon = selectedPrimaryWeapon;
     }
 
-    public int getSecondaryWeapon() {
-        return secondaryWeapon;
+    public int getSelectedSecondaryWeapon() {
+        return selectedSecondaryWeapon;
     }
 
-    public void setSecondaryWeapon(int secondaryWeapon) {
-        this.secondaryWeapon = secondaryWeapon;
+    public void setSelectedSecondaryWeapon(int selectedSecondaryWeapon) {
+        this.selectedSecondaryWeapon = selectedSecondaryWeapon;
     }
 
-    public float getHomeScreenScrollX() {
-        return homeScreenScrollX;
-    }
-
-    public void setHomeScreenScrollX(float homeScreenScrollX) {
-        this.homeScreenScrollX = homeScreenScrollX;
-    }
-
-    public float getPriWeaScrollY() {
-        return priWeaScrollY;
-    }
-
-    public void setPriWeaScrollY(float priWeaScrollY) {
-        this.priWeaScrollY = priWeaScrollY;
-    }
-
-    public float getSecWeaScrollY() {
-        return secWeaScrollY;
-    }
-
-    public void setSecWeaScrollY(float secWeaScrollY) {
-        this.secWeaScrollY = secWeaScrollY;
-    }
-
-    public long getLevelScore(int levelIndex) {
-        for(GameModeData gameModeData : levelDataArray) {
-            if(gameModeData.index == levelIndex) {
+    public long getGameModeScore(int gameModeID) {
+        for (GameModeData gameModeData : gameModeDataArray) {
+            if (gameModeData.gameModeID == gameModeID) {
                 return gameModeData.score;
             }
         }
         return 0;
     }
 
-    public void setLevelScore(int levelIndex, long score) {
-        for(GameModeData gameModeData : levelDataArray) {
-            if(gameModeData.index == levelIndex) {
+    public void setGameModeScore(int gameModeID, long score) {
+        for (GameModeData gameModeData : gameModeDataArray) {
+            if (gameModeData.gameModeID == gameModeID) {
                 gameModeData.score = score;
                 break;
             }
         }
     }
 
-    public long getLevelDistance(int levelIndex) {
-        for(GameModeData gameModeData : levelDataArray) {
-            if(gameModeData.index == levelIndex) {
+    public long getGameModeDistance(int gameModeID) {
+        for (GameModeData gameModeData : gameModeDataArray) {
+            if (gameModeData.gameModeID == gameModeID) {
                 return gameModeData.distance;
             }
         }
         return 0;
     }
 
-    public void setLevelDistance(int levelIndex, long distance) {
-        for(GameModeData gameModeData : levelDataArray) {
-            if(gameModeData.index == levelIndex) {
+    public void setGameModeDistance(int gameModeID, long distance) {
+        for (GameModeData gameModeData : gameModeDataArray) {
+            if (gameModeData.gameModeID == gameModeID) {
                 gameModeData.distance = distance;
                 break;
             }
         }
     }
 
-    public long getLevelStars(int levelIndex) {
-        for(GameModeData gameModeData : levelDataArray) {
-            if(gameModeData.index == levelIndex) {
+    public long getGameModeStars(int gameModeID) {
+        for (GameModeData gameModeData : gameModeDataArray) {
+            if (gameModeData.gameModeID == gameModeID) {
                 return gameModeData.stars;
             }
         }
         return 0;
     }
 
-    public void setLevelStars(int levelIndex, int stars) {
-        for(GameModeData gameModeData : levelDataArray) {
-            if(gameModeData.index == levelIndex) {
+    public void setGameModeStars(int gameModeID, int stars) {
+        for (GameModeData gameModeData : gameModeDataArray) {
+            if (gameModeData.gameModeID == gameModeID) {
                 gameModeData.stars = stars;
                 break;
             }
@@ -206,7 +170,7 @@ public class SaveData implements Serializable {
 
     public long getTotalKills() {
         long kills = fighterKills;
-        for(WeaponData weaponData : weaponDataArray) {
+        for (WeaponData weaponData : weaponDataArray) {
             kills += weaponData.kills;
         }
         return kills;
@@ -230,29 +194,20 @@ public class SaveData implements Serializable {
         return fighterKills;
     }
 
-    public boolean isWeaponUnlocked(int ID) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
-                return weaponData.unlocked;
-            }
-        }
-        return false;
-    }
-
-    public long getWeaponKills(int ID) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
+    public long getWeaponKills(int weaponID) {
+        for (WeaponData weaponData : weaponDataArray) {
+            if (weaponData.weaponID == weaponID) {
                 return weaponData.kills;
             }
         }
         return 0;
     }
 
-    public float getWeaponAccuracy(int ID) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
+    public float getWeaponAccuracy(int weaponID) {
+        for (WeaponData weaponData : weaponDataArray) {
+            if (weaponData.weaponID == weaponID) {
                 if (weaponData.ammunitionsFired > 0) {
-                    return ((float)weaponData.ammunitionsHit / (float)weaponData.ammunitionsFired) * 100;
+                    return ((float) weaponData.ammunitionsHit / (float) weaponData.ammunitionsFired) * 100;
                 } else {
                     return 0;
                 }
@@ -265,36 +220,27 @@ public class SaveData implements Serializable {
         fighterKills += kills;
     }
 
-    public void setWeaponUnlocked(int ID, boolean unlocked) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
-                weaponData.unlocked = unlocked;
-                break;
-            }
-        }
-    }
-
-    public void addToWeaponKills(int ID, long kills) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
+    public void addToWeaponKills(int weaponID, long kills) {
+        for (WeaponData weaponData : weaponDataArray) {
+            if (weaponData.weaponID == weaponID) {
                 weaponData.kills += kills;
                 break;
             }
         }
     }
 
-    public void addToWeaponAmmunitionsFired(int ID, long ammunitionsFired) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
+    public void addToWeaponAmmunitionsFired(int weaponID, long ammunitionsFired) {
+        for (WeaponData weaponData : weaponDataArray) {
+            if (weaponData.weaponID == weaponID) {
                 weaponData.ammunitionsFired += ammunitionsFired;
                 break;
             }
         }
     }
 
-    public void addToWeaponAmmunitionsHit(int ID, long ammunitionsHit) {
-        for(WeaponData weaponData : weaponDataArray) {
-            if(weaponData.ID == ID) {
+    public void addToWeaponAmmunitionsHit(int weaponID, long ammunitionsHit) {
+        for (WeaponData weaponData : weaponDataArray) {
+            if (weaponData.weaponID == weaponID) {
                 weaponData.ammunitionsHit += ammunitionsHit;
                 break;
             }

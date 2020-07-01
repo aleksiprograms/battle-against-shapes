@@ -1,11 +1,11 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.game_world.game_effects.PhysicalEffects;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
-import com.aleksiprograms.battleagainstshapes.game_world.effects.PhysicalEffects;
 
 public class Rocket extends Ammunition {
 
@@ -13,16 +13,15 @@ public class Rocket extends Ammunition {
     private boolean blastWaveMade;
 
     public Rocket(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_ROCKET),
-                game.physicalDefinitions.pdRocket,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_ROCKET),
+                game.getResources().getPhysicalDefinitions().getRocketPhyDef(),
+                Constants.ROCKET_LAUNCHER_ID,
                 Constants.ROCKET_WIDTH,
                 Constants.ROCKET_HEIGHT,
                 true);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
     }
 
     @Override
@@ -38,18 +37,24 @@ public class Rocket extends Ammunition {
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         blastWaveMade = false;
-        sound = game.sounds.getSoundByID(Constants.SOUND_SRC_ROCKET);
-        sound.play(game.saveManager.saveData.getSoundVolume());
+        sound = game.getResources().getSounds().getSoundByID(Constants.SOUND_ROCKET);
+        sound.play(game.getSaveManager().getSaveData().getSoundVolume());
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        game.gameWorld.addEffect(
-                game.particleEffectPools.rocketSmokePool.obtain(),
+        game.getGameWorld().addEffectToWorld(
+                game.getResources().getParticleEffectPools().getRocketSmokePool().obtain(),
                 box2DBody.getPosition().x - 35 / Constants.PPM,
                 box2DBody.getPosition().y - 5 / Constants.PPM);
         if (exploded && !blastWaveMade) {
@@ -63,13 +68,18 @@ public class Rocket extends Ammunition {
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
         if (!exploded) {
             exploded = true;
             sound.stop();
-            game.sounds.getSoundByID(Constants.SOUND_SRC_EXPLOSION_BIG_A).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.rocketExplosionPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_EXPLOSION_BIG_A)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getRocketExplosionPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         }

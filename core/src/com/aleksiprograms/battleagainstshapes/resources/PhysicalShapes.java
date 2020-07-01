@@ -6,38 +6,70 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
- * Holds physical shapes of game object for box2D.
+ * Holds physical shapes of game object for the box2D physics.
  */
-public class Shapes implements Disposable {
+public class PhysicalShapes implements Disposable {
 
-    public PolygonShape fighterShape;
-    public PolygonShape tailWingShape;
-    public PolygonShape wallShape;
-    public PolygonShape levelEndSensorShape;
-    public CircleShape bladeShape;
-    public PolygonShape dynamiteShape;
-    public PolygonShape bulletShape;
-    public PolygonShape grenadeShape;
-    public PolygonShape knifeShape;
-    public PolygonShape rocketShape;
-    public CircleShape shotShape;
-    public CircleShape particleShape;
-    public CircleShape enemyCircleShape;
-    public PolygonShape enemyEllipseShape;
-    public CircleShape enemyPentagonShape;
-    public PolygonShape enemyRectangleShape;
-    public PolygonShape enemySemicircleShape;
-    public PolygonShape enemySquareShape;
-    public CircleShape enemyStarShape;
-    public PolygonShape enemyTriangleShape;
-    public CircleShape enemyCircleAmmunitionShape;
-    public CircleShape enemyPentagonAmmunitionShape;
-    public PolygonShape enemyRectangleAmmunitionShape;
-    public CircleShape enemySemicircleAmmunitionShape;
-    public CircleShape enemyStarAmmunitionShape;
-    public PolygonShape enemyTriangleAmmunitionShape;
+    private PolygonShape fighterShape;
+    private PolygonShape tailWingShape;
+    private PolygonShape invisibleWallShape;
+    private CircleShape bladeShape;
+    private PolygonShape dynamiteShape;
+    private PolygonShape bulletShape;
+    private PolygonShape grenadeShape;
+    private PolygonShape knifeShape;
+    private PolygonShape rocketShape;
+    private CircleShape shotShape;
+    private CircleShape particleShape;
+    private CircleShape enemyCircleShape;
+    private PolygonShape enemyEllipseShape;
+    private CircleShape enemyPentagonShape;
+    private PolygonShape enemyRectangleShape;
+    private PolygonShape enemySemicircleShape;
+    private PolygonShape enemySquareShape;
+    private CircleShape enemyStarShape;
+    private PolygonShape enemyTriangleShape;
+    private CircleShape enemyCircleAmmunitionShape;
+    private CircleShape enemyPentagonAmmunitionShape;
+    private PolygonShape enemyRectangleAmmunitionShape;
+    private CircleShape enemySemicircleAmmunitionShape;
+    private CircleShape enemyStarAmmunitionShape;
+    private PolygonShape enemyTriangleAmmunitionShape;
 
-    public Shapes() {
+    public PhysicalShapes() {
+        initialize();
+    }
+
+    @Override
+    public void dispose() {
+        fighterShape.dispose();
+        tailWingShape.dispose();
+        invisibleWallShape.dispose();
+        bladeShape.dispose();
+        dynamiteShape.dispose();
+        bulletShape.dispose();
+        grenadeShape.dispose();
+        knifeShape.dispose();
+        rocketShape.dispose();
+        shotShape.dispose();
+        particleShape.dispose();
+        enemyCircleShape.dispose();
+        enemyEllipseShape.dispose();
+        enemyPentagonShape.dispose();
+        enemyRectangleShape.dispose();
+        enemySemicircleShape.dispose();
+        enemySquareShape.dispose();
+        enemyStarShape.dispose();
+        enemyTriangleShape.dispose();
+        enemyCircleAmmunitionShape.dispose();
+        enemyPentagonAmmunitionShape.dispose();
+        enemyRectangleAmmunitionShape.dispose();
+        enemySemicircleAmmunitionShape.dispose();
+        enemyStarAmmunitionShape.dispose();
+        enemyTriangleAmmunitionShape.dispose();
+    }
+
+    private void initialize() {
         Vector2[] vector2;
 
         fighterShape = new PolygonShape();
@@ -62,13 +94,8 @@ public class Shapes implements Disposable {
         };
         tailWingShape.set(vector2);
 
-        wallShape = new PolygonShape();
-        wallShape.setAsBox(Constants.WALL_WIDTH / 2, Constants.WALL_HEIGHT / 2);
-
-        levelEndSensorShape = new PolygonShape();
-        levelEndSensorShape.setAsBox(
-                Constants.LEVEL_END_SENSOR_WIDTH / 2,
-                Constants.LEVEL_END_SENSOR_HEIGHT / 2);
+        invisibleWallShape = new PolygonShape();
+        invisibleWallShape.setAsBox(Constants.WALL_WIDTH / 2, Constants.WALL_HEIGHT / 2);
 
         bladeShape = new CircleShape();
         bladeShape.setRadius(Constants.BLADE_WIDTH / 2);
@@ -157,31 +184,103 @@ public class Shapes implements Disposable {
         enemyTriangleAmmunitionShape.set(vector2);
     }
 
-    @Override
-    public void dispose() {
-        fighterShape.dispose();
-        tailWingShape.dispose();
-        wallShape.dispose();
-        levelEndSensorShape.dispose();
-        bladeShape.dispose();
-        dynamiteShape.dispose();
-        bulletShape.dispose();
-        grenadeShape.dispose();
-        knifeShape.dispose();
-        rocketShape.dispose();
-        shotShape.dispose();
-        particleShape.dispose();
-        enemyCircleShape.dispose();
-        enemyEllipseShape.dispose();
-        enemyPentagonShape.dispose();
-        enemyRectangleShape.dispose();
-        enemySemicircleShape.dispose();
-        enemySquareShape.dispose();
-        enemyStarShape.dispose();
-        enemyTriangleShape.dispose();
-        enemyPentagonAmmunitionShape.dispose();
-        enemyRectangleAmmunitionShape.dispose();
-        enemySemicircleAmmunitionShape.dispose();
-        enemyTriangleAmmunitionShape.dispose();
+    public PolygonShape getFighterShape() {
+        return fighterShape;
+    }
+
+    public PolygonShape getTailWingShape() {
+        return tailWingShape;
+    }
+
+    public PolygonShape getInvisibleWallShape() {
+        return invisibleWallShape;
+    }
+
+    public CircleShape getBladeShape() {
+        return bladeShape;
+    }
+
+    public PolygonShape getDynamiteShape() {
+        return dynamiteShape;
+    }
+
+    public PolygonShape getBulletShape() {
+        return bulletShape;
+    }
+
+    public PolygonShape getGrenadeShape() {
+        return grenadeShape;
+    }
+
+    public PolygonShape getKnifeShape() {
+        return knifeShape;
+    }
+
+    public PolygonShape getRocketShape() {
+        return rocketShape;
+    }
+
+    public CircleShape getShotShape() {
+        return shotShape;
+    }
+
+    public CircleShape getParticleShape() {
+        return particleShape;
+    }
+
+    public CircleShape getEnemyCircleShape() {
+        return enemyCircleShape;
+    }
+
+    public PolygonShape getEnemyEllipseShape() {
+        return enemyEllipseShape;
+    }
+
+    public CircleShape getEnemyPentagonShape() {
+        return enemyPentagonShape;
+    }
+
+    public PolygonShape getEnemyRectangleShape() {
+        return enemyRectangleShape;
+    }
+
+    public PolygonShape getEnemySemicircleShape() {
+        return enemySemicircleShape;
+    }
+
+    public PolygonShape getEnemySquareShape() {
+        return enemySquareShape;
+    }
+
+    public CircleShape getEnemyStarShape() {
+        return enemyStarShape;
+    }
+
+    public PolygonShape getEnemyTriangleShape() {
+        return enemyTriangleShape;
+    }
+
+    public CircleShape getEnemyCircleAmmunitionShape() {
+        return enemyCircleAmmunitionShape;
+    }
+
+    public CircleShape getEnemyPentagonAmmunitionShape() {
+        return enemyPentagonAmmunitionShape;
+    }
+
+    public PolygonShape getEnemyRectangleAmmunitionShape() {
+        return enemyRectangleAmmunitionShape;
+    }
+
+    public CircleShape getEnemySemicircleAmmunitionShape() {
+        return enemySemicircleAmmunitionShape;
+    }
+
+    public CircleShape getEnemyStarAmmunitionShape() {
+        return enemyStarAmmunitionShape;
+    }
+
+    public PolygonShape getEnemyTriangleAmmunitionShape() {
+        return enemyTriangleAmmunitionShape;
     }
 }

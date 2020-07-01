@@ -1,14 +1,14 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.DrawablePhysicalGameObject;
+import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.DrawableGameObject;
-import com.aleksiprograms.battleagainstshapes.toolbox.PhysicalDef;
 
-public abstract class EnemyAmmunition extends DrawableGameObject {
+public abstract class EnemyAmmunition extends DrawablePhysicalGameObject {
 
-    public boolean dead;
+    protected boolean dead;
 
     public EnemyAmmunition(
             TheGame game,
@@ -16,7 +16,6 @@ public abstract class EnemyAmmunition extends DrawableGameObject {
             PhysicalDef physicalDef,
             float width,
             float height) {
-
         super(
                 game,
                 textureRegion,
@@ -27,8 +26,14 @@ public abstract class EnemyAmmunition extends DrawableGameObject {
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         dead = false;
     }
 }

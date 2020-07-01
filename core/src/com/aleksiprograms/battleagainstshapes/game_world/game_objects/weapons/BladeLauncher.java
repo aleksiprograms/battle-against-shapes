@@ -1,18 +1,17 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.weapons;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
 
 public class BladeLauncher extends AmmoHolder {
 
     public BladeLauncher(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_BLADE_LAUNCHER),
-                game.getTextureRegionByID(Constants.TEX_SRC_BLADE),
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_BLADE_LAUNCHER),
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_BLADE),
                 Constants.BLADE_LAUNCHER_ID,
                 4,
                 Constants.BLADE_LAUNCHER_WIDTH,
@@ -42,15 +41,17 @@ public class BladeLauncher extends AmmoHolder {
             Vector2 velocity;
             for (float angle : angles) {
                 velocity = new Vector2(MathUtils.cos(angle), MathUtils.sin(angle)).scl(25);
-                game.gameWorld.addBladeToWorld(
-                        game.gameObjectPools.bladePool.obtain(),
-                        game.player.fighter.box2DBody.getPosition().x + Constants.BLADE_X_OFFSET,
-                        game.player.fighter.box2DBody.getPosition().y + Constants.BLADE_Y_OFFSET,
+                game.getGameWorld().addGameObjectToWorld(
+                        game.getResources().getGameObjectPools().getBladePool().obtain(),
+                        game.getGameWorld().getPlayer().getFighter().getBox2DBody()
+                                .getPosition().x + Constants.BLADE_X_OFFSET,
+                        game.getGameWorld().getPlayer().getFighter().getBox2DBody()
+                                .getPosition().y + Constants.BLADE_Y_OFFSET,
                         0,
                         velocity,
                         Constants.MAX_HEALTH_BLADE,
                         Constants.DAMAGE_BLADE);
-                game.player.gameModeStatsManager.addToSecWeaAmmunitionsFired();
+                game.getGameScreen().getInGameStatsManager().addToWeaponAmmunitionsFired(weaponID);
             }
         }
     }

@@ -1,21 +1,19 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.enemies;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
 import com.aleksiprograms.battleagainstshapes.resources.Constants;
 
 public class EnemyPentagonAmmunition extends EnemyAmmunition {
 
     public EnemyPentagonAmmunition(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_ENEMY_PENTAGON),
-                game.physicalDefinitions.pdEnemyPentagonAmmunition,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_ENEMY_PENTAGON),
+                game.getResources().getPhysicalDefinitions().getEnemyPentagonAmmunitionPhyDef(),
                 Constants.ENEMY_PENTAGON_AMMUNITION_WIDTH,
                 Constants.ENEMY_PENTAGON_AMMUNITION_HEIGHT);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
     }
 
     @Override
@@ -23,9 +21,11 @@ public class EnemyPentagonAmmunition extends EnemyAmmunition {
         super.update(deltaTime);
         if (box2DBody.getLinearVelocity().len() < 1f && !dead) {
             dead = true;
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_EXPLOSION).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyPentagonHitPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_EXPLOSION)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyPentagonHitPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
             freeObject = true;
@@ -33,13 +33,18 @@ public class EnemyPentagonAmmunition extends EnemyAmmunition {
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
-        super.onContact(damage, gameObjectA, gameObjectB);
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
+        super.onContact(damage, physicalGameObjectA, physicalGameObjectB);
         if (!dead) {
             dead = true;
-            game.sounds.getSoundByID(Constants.SOUND_SRC_ENEMY_EXPLOSION).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.enemyPentagonHitPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_ENEMY_EXPLOSION)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getEnemyPentagonHitPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         }

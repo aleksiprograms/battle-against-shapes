@@ -7,23 +7,29 @@ import com.badlogic.gdx.math.Vector2;
 public class Blade extends Ammunition {
 
     public Blade(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_BLADE),
-                game.physicalDefinitions.pdBlade,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_BLADE),
+                game.getResources().getPhysicalDefinitions().getBladePhyDef(),
+                Constants.BLADE_LAUNCHER_ID,
                 Constants.BLADE_WIDTH,
                 Constants.BLADE_HEIGHT,
                 false);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         box2DBody.setAngularVelocity(0);
         box2DBody.applyTorque(-50, true);
-        game.sounds.getSoundByID(Constants.SOUND_SRC_BLADE).play(game.saveManager.saveData.getSoundVolume());
+        game.getResources().getSounds().getSoundByID(Constants.SOUND_BLADE)
+                .play(game.getSaveManager().getSaveData().getSoundVolume());
     }
 }

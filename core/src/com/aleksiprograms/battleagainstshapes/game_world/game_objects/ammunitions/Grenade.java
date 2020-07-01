@@ -1,11 +1,11 @@
 package com.aleksiprograms.battleagainstshapes.game_world.game_objects.ammunitions;
 
 import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.badlogic.gdx.audio.Sound;
+import com.aleksiprograms.battleagainstshapes.game_world.game_effects.PhysicalEffects;
+import com.aleksiprograms.battleagainstshapes.game_world.game_objects.PhysicalGameObject;
 import com.aleksiprograms.battleagainstshapes.resources.Constants;
-import com.aleksiprograms.battleagainstshapes.game_world.game_objects.GameObject;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
-import com.aleksiprograms.battleagainstshapes.game_world.effects.PhysicalEffects;
 
 public class Grenade extends Ammunition {
 
@@ -13,16 +13,15 @@ public class Grenade extends Ammunition {
     private boolean blastWaveMade;
 
     public Grenade(TheGame game) {
-
         super(
                 game,
-                game.getTextureRegionByID(Constants.TEX_SRC_GRENADE),
-                game.physicalDefinitions.pdGrenade,
+                game.getResources().getTextureRegionByID(Constants.TEXTURE_GRENADE),
+                game.getResources().getPhysicalDefinitions().getGrenadePhyDef(),
+                Constants.GRENADE_LAUNCHER_ID,
                 Constants.GRENADE_WIDTH,
                 Constants.GRENADE_HEIGHT,
                 true);
-
-        box2DBody.createFixture(physicalDef.fixtureDef).setUserData(this);
+        box2DBody.createFixture(physicalDef.getFixtureDef()).setUserData(this);
     }
 
     @Override
@@ -38,18 +37,24 @@ public class Grenade extends Ammunition {
     }
 
     @Override
-    public void init(float x, float y, float angle, Vector2 velocity, float health, float damage) {
-        super.init(x, y, angle, velocity, health, damage);
+    public void initialize(
+            float x,
+            float y,
+            float angle,
+            Vector2 velocity,
+            float health,
+            float damage) {
+        super.initialize(x, y, angle, velocity, health, damage);
         blastWaveMade = false;
-        sound = game.sounds.getSoundByID(Constants.SOUND_SRC_GRENADE);
-        sound.play(game.saveManager.saveData.getSoundVolume());
+        sound = game.getResources().getSounds().getSoundByID(Constants.SOUND_GRENADE);
+        sound.play(game.getSaveManager().getSaveData().getSoundVolume());
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        game.gameWorld.addEffect(
-                game.particleEffectPools.grenadeSmokePool.obtain(),
+        game.getGameWorld().addEffectToWorld(
+                game.getResources().getParticleEffectPools().getGrenadeSmokePool().obtain(),
                 box2DBody.getPosition().x - 28 / Constants.PPM,
                 box2DBody.getPosition().y - 5 / Constants.PPM);
         if (exploded && !blastWaveMade) {
@@ -63,14 +68,19 @@ public class Grenade extends Ammunition {
     }
 
     @Override
-    public void onContact(float damage, GameObject gameObjectA, GameObject gameObjectB) {
-        super.onContact(damage, gameObjectA, gameObjectB);
+    public void onContact(
+            float damage,
+            PhysicalGameObject physicalGameObjectA,
+            PhysicalGameObject physicalGameObjectB) {
+        super.onContact(damage, physicalGameObjectA, physicalGameObjectB);
         if (!exploded) {
             exploded = true;
             sound.stop();
-            game.sounds.getSoundByID(Constants.SOUND_SRC_EXPLOSION_SMALL_A).play(game.saveManager.saveData.getSoundVolume());
-            game.gameWorld.addEffect(
-                    game.particleEffectPools.grenadeExplosionPool.obtain(),
+            game.getResources().getSounds().getSoundByID(Constants.SOUND_EXPLOSION_SMALL_A)
+                    .play(game.getSaveManager().getSaveData().getSoundVolume());
+            game.getGameWorld().addEffectToWorld(
+                    game.getResources().getParticleEffectPools()
+                            .getGrenadeExplosionPool().obtain(),
                     box2DBody.getPosition().x,
                     box2DBody.getPosition().y);
         }

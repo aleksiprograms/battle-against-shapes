@@ -1,107 +1,200 @@
 package com.aleksiprograms.battleagainstshapes.screens;
 
+import com.aleksiprograms.battleagainstshapes.TheGame;
+import com.aleksiprograms.battleagainstshapes.managers.InGameStatsManager;
+import com.aleksiprograms.battleagainstshapes.resources.Constants;
+import com.aleksiprograms.battleagainstshapes.screens.huds.GameOverHud;
+import com.aleksiprograms.battleagainstshapes.screens.huds.InGameHud;
+import com.aleksiprograms.battleagainstshapes.screens.huds.PausedHud;
+import com.aleksiprograms.battleagainstshapes.toolbox.GameMode;
+import com.aleksiprograms.battleagainstshapes.toolbox.GameState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.aleksiprograms.battleagainstshapes.TheGame;
-import com.aleksiprograms.battleagainstshapes.resources.Constants;
-import com.aleksiprograms.battleagainstshapes.toolbox.LevelState;
 
 public class GameScreen extends AbstractScreen {
 
-    private OrthographicCamera camera;
-    private FPSLogger fpsLogger = new FPSLogger();
+    private OrthographicCamera cameraGame;
+    private FitViewport viewportGame;
+    private GameMode gameMode;
+    private InGameStatsManager inGameStatsManager;
+    private FPSLogger fpsLogger;
+    private GameState gameState;
+
+    private InGameHud inGameHud;
+    private GameOverHud gameOverHud;
+    private PausedHud pausedHud;
 
     public GameScreen(TheGame game) {
         super(game);
-        initScreen();
-    }
-
-    @Override
-    public void show() {
-        game.gameStateManager.setNewBestScore(false);
-        game.gameStateManager.setLevelGaming();
-        game.hudManager.setHudToGaming();
-        game.gameWorld.createWorld(game.gameMode);
-        game.hudManager.inGameHud.setHealth(Constants.MAX_HEALTH_PLAYER);
-        game.hudManager.inGameHud.setScore(0);
-        game.hudManager.inGameHud.setCombo(0);
-        game.hudManager.inGameHud.setDistance(0);
-        Gdx.input.setInputProcessor(game.hudManager.stage);
+        cameraGame = new OrthographicCamera();
+        viewportGame = new FitViewport(
+                Constants.SCREEN_WIDTH,
+                Constants.SCREEN_HEIGHT,
+                cameraGame);
+        inGameStatsManager = new InGameStatsManager(game);
+        fpsLogger = new FPSLogger();
+        inGameHud = new InGameHud(game);
+        gameOverHud = new GameOverHud(game);
+        pausedHud = new PausedHud(game);
     }
 
     @Override
     public void render(float deltaTime) {
-        game.appTime += deltaTime;
-        if (game.gameStateManager.getLevelState().equals(LevelState.GAMING)) {
-            game.gameTime += deltaTime;
+        game.getTimeManager().addToAppTime(deltaTime);
+        if (gameState.equals(GameState.IN_GAME)) {
+            game.getTimeManager().addToGameTime(deltaTime);
         }
         update(Constants.FIXED_TIME_STEP);
         fpsLogger.log();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.spriteBatch.setProjectionMatrix(camera.combined);
+        game.getSpriteBatch().setProjectionMatrix(cameraGame.combined);
+        game.getSpriteBatch().begin();
+        game.getSpriteBatch().disableBlending();
+        game.getGameWorld().drawBackground(game.getSpriteBatch());
+        game.getSpriteBatch().enableBlending();
+        game.getGameWorld().drawObjects(game.getSpriteBatch());
+        game.getGameWorld().drawEffects(game.getSpriteBatch());
+        game.getSpriteBatch().end();
 
-        game.spriteBatch.begin();
-        game.spriteBatch.disableBlending();
-        game.gameWorld.drawBackground(game.spriteBatch);
-        game.spriteBatch.enableBlending();
-        game.gameWorld.drawObjects(game.spriteBatch);
-        game.gameWorld.drawEffects(game.spriteBatch);
-        game.spriteBatch.end();
+        game.getSpriteBatch().setProjectionMatrix(stage.getCamera().combined);
+        stage.act();
+        stage.draw();
 
-        game.spriteBatch.setProjectionMatrix(game.hudManager.stage.getCamera().combined);
-        game.hudManager.stage.act();
-        game.hudManager.stage.draw();
-
-        //game.gameWorld.box2DDebugRenderer.render(game.gameWorld.box2DWorld, camera.combined);
+        if (Constants.DEBUG_DRAW_WORLD) {
+            game.getGameWorld().getBox2DDebugRenderer().render(
+                    game.getGameWorld().getBox2DWorld(),
+                    cameraGame.combined);
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        game.hudManager.viewport.update(width, height);
+        super.resize(width, height);
+        viewportGame.update(width, height, true);
     }
 
     public void update(float deltaTime) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            if (game.gameStateManager.getLevelState().equals(LevelState.GAMING)) {
-                game.gameStateManager.setLevelPaused();
-            } else if (game.gameStateManager.getLevelState().equals(LevelState.PAUSED)) {
-                game.gameStateManager.setLevelGaming();
-            } else if (game.gameStateManager.getLevelState().equals(LevelState.COMPLETED)) {
-                game.setScreen(new HomeScreen(game));
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)
+                || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (gameState.equals(GameState.IN_GAME)) {
+                changeGameState(GameState.PAUSED);
+            } else if (gameState.equals(GameState.PAUSED)
+                    || gameState.equals(GameState.GAME_OVER)) {
+                game.getMainMenuScreen().updateData();
+                game.setScreen(game.getMainMenuScreen());
             }
         }
-        game.hudManager.update();
-        game.gameWorld.update(deltaTime);
-        camera.position.x = game.player.fighter.box2DBody.getPosition().x + Constants.PLAYER_X_POS_FROM_CENTER;
-        camera.position.y = Constants.SCREEN_HEIGHT / 2;
-        camera.update();
+        game.getGameWorld().update(deltaTime);
+        cameraGame.position.x =
+                game.getGameWorld().getPlayer().getFighter().getBox2DBody().getPosition().x
+                + Constants.PLAYER_X_POS_FROM_CENTER;
+        cameraGame.position.y = Constants.SCREEN_HEIGHT / 2;
+        cameraGame.update();
+    }
 
-        if (game.gameStateManager.getLevelState().equals(LevelState.GAMING)) {
-            if (game.gameStateManager.isUpdateInGameHud()) {
-                game.hudManager.inGameHud.setHealth(game.player.fighter.health);
-                game.hudManager.inGameHud.setScore(game.player.gameModeStatsManager.getScore());
-                game.hudManager.inGameHud.setCombo(game.player.gameModeStatsManager.getCombo());
-                game.hudManager.inGameHud.setDistance(game.player.gameModeStatsManager.getDistance());
-                game.gameStateManager.setUpdateInGameHud(false);
-            }
+    @Override
+    public void updateData() {
+        super.updateData();
+        gameState = GameState.IN_GAME;
+        setPlayerWeapons();
+        game.getGameWorld().createWorld(gameMode);
+        stage.addActor(inGameHud);
+        inGameHud.updateData();
+        inGameStatsManager.reset();
+        inGameStatsManager.addWeapon(
+                game.getGameWorld().getPlayer().getPrimaryWeapon().getWeaponID());
+        inGameStatsManager.addWeapon(
+                game.getGameWorld().getPlayer().getSecondaryWeapon().getWeaponID());
+    }
+
+    public void changeGameState(GameState gameState) {
+        this.gameState = gameState;
+        stage.clear();
+        if (gameState.equals(GameState.PAUSED)) {
+            inGameStatsManager.onPause();
+            game.getGameWorld().onPause();
+            pausedHud.updateData();
+            stage.addActor(pausedHud);
+        } else if (gameState.equals(GameState.IN_GAME)) {
+            game.getGameWorld().onResume();
+            inGameHud.updateData();
+            stage.addActor(inGameHud);
+        } else if (gameState.equals(GameState.GAME_OVER)) {
+            inGameStatsManager.onGameOver();
+            gameOverHud.updateData();
+            stage.addActor(gameOverHud);
+        } else if (gameState.equals(GameState.TO_REPLAY)) {
+            game.getGameWorld().clearWorld();
+            game.getWeaponsScreen().updateData();
+            game.setScreen(game.getWeaponsScreen());
+        } else if (gameState.equals(GameState.TO_MAIN_MENU)) {
+            game.getGameWorld().clearWorld();
+            game.getMainMenuScreen().updateData();
+            game.setScreen(game.getMainMenuScreen());
         }
     }
 
-    private void initScreen() {
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(
-                Constants.SCREEN_WIDTH,
-                Constants.SCREEN_HEIGHT,
-                camera);
-        camera.position.set(
-                viewport.getWorldWidth() / 2,
-                viewport.getWorldHeight() / 2, 0);
+    private void setPlayerWeapons() {
+        if (game.getSaveManager().getSaveData().getSelectedPrimaryWeapon()
+                == Constants.MACHINE_GUN_ID) {
+            game.getGameWorld().getPlayer().setPrimaryWeapon(
+                    game.getResources().getGameObjectPools().getMachineGunPool().obtain());
+        } else if (game.getSaveManager().getSaveData().getSelectedPrimaryWeapon()
+                == Constants.SHOTGUN_ID) {
+            game.getGameWorld().getPlayer().setPrimaryWeapon(
+                    game.getResources().getGameObjectPools().getShotgunPool().obtain());
+        } else if (game.getSaveManager().getSaveData().getSelectedPrimaryWeapon()
+                == Constants.FLAMETHROWER_ID) {
+            game.getGameWorld().getPlayer().setPrimaryWeapon(
+                    game.getResources().getGameObjectPools().getFlamethrowerPool().obtain());
+        } else if (game.getSaveManager().getSaveData().getSelectedPrimaryWeapon()
+                == Constants.KNIFE_THROWER_ID) {
+            game.getGameWorld().getPlayer().setPrimaryWeapon(
+                    game.getResources().getGameObjectPools().getKnifeThrowerPool().obtain());
+        }
+
+        if (game.getSaveManager().getSaveData().getSelectedSecondaryWeapon()
+                == Constants.GRENADE_LAUNCHER_ID) {
+            game.getGameWorld().getPlayer().setSecondaryWeapon(
+                    game.getResources().getGameObjectPools().getGrenadeLauncherPool().obtain());
+        } else if (game.getSaveManager().getSaveData().getSelectedSecondaryWeapon()
+                == Constants.ROCKET_LAUNCHER_ID) {
+            game.getGameWorld().getPlayer().setSecondaryWeapon(
+                    game.getResources().getGameObjectPools().getRocketLauncherPool().obtain());
+        } else if (game.getSaveManager().getSaveData().getSelectedSecondaryWeapon()
+                == Constants.DYNAMITE_LAUNCHER_ID) {
+            game.getGameWorld().getPlayer().setSecondaryWeapon(
+                    game.getResources().getGameObjectPools().getDynamiteLauncherPool().obtain());
+        } else if (game.getSaveManager().getSaveData().getSelectedSecondaryWeapon()
+                == Constants.BLADE_LAUNCHER_ID) {
+            game.getGameWorld().getPlayer().setSecondaryWeapon(
+                    game.getResources().getGameObjectPools().getBladeLauncherPool().obtain());
+        }
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    public InGameStatsManager getInGameStatsManager() {
+        return inGameStatsManager;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public InGameHud getInGameHud() {
+        return inGameHud;
     }
 }
