@@ -1,6 +1,6 @@
 # Battle Against Shapes
 
-Battle Against Shapes is a game made with libGDX framework and it is for Android and desktop.
+Battle Against Shapes is a game made with libGDX framework and Java and it is for Android and desktop.
 
 <img src="/screenshots/battleagainstshapesgameplay.png" width="640px">
 
